@@ -325,28 +325,38 @@ fi
 
 # ── 7) Model gateway reachable with the provided key ───────────────────
 [ -n "${API_KEY:-}" ] || fail "API_KEY is not set (model: $MODEL_SLUG → ${_prefix}_API_KEY in .env)."
-# Probe the endpoint this harness speaks (values from the selected .env
-# group; the gateway binds models to one protocol per endpoint). OpenAI-style
-# base URLs carry /v1 already; ANTHROPIC_BASE_URL omits it (the Claude SDK
-# appends /v1 itself), so try the /v1 endpoint first whenever the base URL
-# has no /v1 suffix.
+# Probe the endpoint this harness speaks, using that protocol's own call:
+#   OpenAI protocol  → GET  {base}/models        (listing; widely supported)
+#   Anthropic protocol → POST {base}/v1/messages (no listing endpoint exists
+#                       on Anthropic-style gateways, so a 1-token message is
+#                       the reachability + key check)
+# The gateway binds models to one protocol per endpoint, so the probe must
+# match the harness protocol or a healthy gateway looks down.
 if [ "$_harness" = "claude-code" ]; then
     GATEWAY_URL="${ANTHROPIC_BASE_URL:-}"
+    _probe_url="${GATEWAY_URL%/}/v1/messages"
+    _http_code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
+        -X POST "$_probe_url" \
+        -H "x-api-key: ${API_KEY}" \
+        -H "anthropic-version: 2023-06-01" \
+        -H "Content-Type: application/json" \
+        -d "{\"model\":\"${ANTHROPIC_MODEL_ID:-}\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}]}")" || _http_code=000
+    [ "$_http_code" = "200" ] || fail "anthropic messages endpoint returned HTTP $_http_code at $_probe_url — key invalid, model id wrong, or gateway down."
 else
     GATEWAY_URL="${OPENAI_BASE_URL:-}"
+    [ -n "$GATEWAY_URL" ] || fail "harness $_harness has no base URL (see the ${_prefix}_ group in .env)."
+    case "$GATEWAY_URL" in
+        */v1) _model_urls="${GATEWAY_URL}/models" ;;
+        *)    _model_urls="${GATEWAY_URL}/v1/models ${GATEWAY_URL}/models" ;;
+    esac
+    _http_code=000
+    for _url in $_model_urls; do
+        _http_code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 \
+            -H "Authorization: Bearer ${API_KEY}" "$_url")" || _http_code=000
+        [ "$_http_code" = "200" ] && break
+    done
+    [ "$_http_code" = "200" ] || fail "no models endpoint returned HTTP 200 under ${GATEWAY_URL} (tried: $_model_urls; last: HTTP $_http_code) — key invalid or gateway down."
 fi
-[ -n "$GATEWAY_URL" ] || fail "harness $_harness has no base URL (see the ${_prefix}_ group in .env)."
-case "$GATEWAY_URL" in
-    */v1) _model_urls="${GATEWAY_URL}/models" ;;
-    *)    _model_urls="${GATEWAY_URL}/v1/models ${GATEWAY_URL}/models" ;;
-esac
-_http_code=000
-for _url in $_model_urls; do
-    _http_code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 \
-        -H "Authorization: Bearer ${API_KEY}" "$_url")" || _http_code=000
-    [ "$_http_code" = "200" ] && break
-done
-[ "$_http_code" = "200" ] || fail "no models endpoint returned HTTP 200 under ${GATEWAY_URL} (tried: $_model_urls; last: HTTP $_http_code) — key invalid or gateway down."
 
 # ── 8) Dry run: report the resolved plan, run nothing ──────────────────
 if [ "$DRY_RUN" = "1" ]; then
