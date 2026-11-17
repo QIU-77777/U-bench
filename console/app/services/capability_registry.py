@@ -1,9 +1,8 @@
-"""Capability registry: read harness and environment definitions from the repo.
+"""Capability registry: read harness definitions from the repo.
 
 Everything the profile page shows comes from files users can edit:
-configs/harnesses/*.yaml, harness/*/manifest.yaml, esa/agent.json,
-environment/catalog.json, configs/tools.json, environment/manifest.json
-and environment/seed-v1.json. This service only reads.
+configs/harnesses/*.yaml and harness/<name>/manifest.yaml.
+This service only reads.
 """
 
 from __future__ import annotations
@@ -16,27 +15,14 @@ from .. import config
 
 _HARNESS_DIR = "configs/harnesses"
 _MANIFEST_DIR = "harness"
-_ESA_AGENT_JSON = "esa/agent.json"
-_TOOL_CATALOG = "environment/catalog.json"
-_TOOL_CONFIG = "configs/tools.json"
-_ENV_MANIFEST = "environment/manifest.json"
-_SEED_FILE = "environment/seed-v1.json"
-
-_SEED_LABELS = {
-    "pois": "兴趣点",
-    "tracks": "曲库",
-    "documents": "知识文档",
-    "routes": "路线",
-    "weather": "天气",
-    "contacts": "联系人",
-    "visions": "视觉描述",
-    "services": "生活服务",
-}
 
 _STANDARD_ENV = {
     "id": "standard",
-    "name": "standard（空容器）",
-    "description": "node:22-alpine 基础容器，预装 bash、curl、python3、pytest。无 MCP 工具，Agent 通过 shell 直接操作文件系统。",
+    "name": "standard（任务自带环境）",
+    "description": (
+        "环境由任务自己的 environment/Dockerfile 定义，Harbor 构建并运行。"
+        "编码与办公任务的工具链、数据、应用都放在任务镜像里，Agent 通过 shell 直接操作。"
+    ),
 }
 
 
@@ -47,7 +33,7 @@ def available_harnesses() -> list[str]:
 
 
 def available_environments() -> list[str]:
-    return ["standard", "esa", "esa-cockpit"]
+    return ["standard"]
 
 
 def harness_detail(harness_id: str) -> dict | None:
@@ -72,7 +58,7 @@ def harness_detail(harness_id: str) -> dict | None:
         "import_path": str(data.get("import_path") or ""),
         "image": _read_manifest(harness_id),
         "params": params,
-        "agent": _read_esa_agent() if harness_id == "esa" else None,
+        "agent": None,
         "notes": [],
     }
     if detail["agent"] is None:
@@ -84,7 +70,8 @@ def harness_detail(harness_id: str) -> dict | None:
 
 
 def environment_detail(env_id: str) -> dict | None:
-    """Aggregate an environment definition from its catalog, config and seed."""
+    """Environment card. Only the standard environment exists for now; task
+    environments are defined per task in their own Dockerfile."""
     if env_id == "standard":
         return {
             **_STANDARD_ENV,
@@ -92,87 +79,7 @@ def environment_detail(env_id: str) -> dict | None:
             "data": {"entities": [], "seed_sha256": ""},
             "version": "",
         }
-    if env_id == "esa-cockpit":
-        return _cockpit_environment()
-    if env_id != "esa":
-        return None
-
-    catalog = _read_json(config.REPO_ROOT / _TOOL_CATALOG) or {}
-    tool_config = _read_json(config.REPO_ROOT / _TOOL_CONFIG) or {}
-    manifest = _read_json(config.REPO_ROOT / _ENV_MANIFEST) or {}
-    seed = _read_json(config.REPO_ROOT / _SEED_FILE) or {}
-
-    enabled_map = {
-        str(item.get("name")): bool(item.get("enabled"))
-        for item in tool_config.get("tools") or []
-    }
-    items = []
-    for tool in catalog.get("tools") or []:
-        name = str(tool.get("name") or "")
-        if not name:
-            continue
-        items.append(
-            {
-                "name": name,
-                "title": str(tool.get("title") or name),
-                "description": str(tool.get("description") or ""),
-                "enabled": enabled_map.get(name, False),
-            }
-        )
-    entities = [
-        {"type": key, "label": label, "count": len(seed.get(key) or [])}
-        for key, label in _SEED_LABELS.items()
-        if seed.get(key)
-    ]
-    return {
-        "id": "esa",
-        "name": "esa（座舱环境）",
-        "description": (
-            "本地模拟座舱：mock-system 工具服务、agent-api runtime 与 Redis 会话状态。"
-            "工具查询与写入真实会话状态，失败调用回滚。"
-        ),
-        "tools": {
-            "total": len(items),
-            "enabled": sum(1 for item in items if item["enabled"]),
-            "entries": items,
-        },
-        "data": {
-            "entities": entities,
-            "seed_sha256": str(manifest.get("seed_sha256") or ""),
-        },
-        "version": str(manifest.get("environment_version") or ""),
-    }
-
-
-def _cockpit_environment() -> dict:
-    """Cockpit stack card: recorder and MCP server runtime information.
-
-    The tool list lives in the user MCP server, so the card reads the running
-    recorder's manifest. Without the dev stack the card still describes the
-    chain; tool entries stay empty until the recorder answers.
-    """
-    manifest = _read_runtime_json("http://127.0.0.1:18093/eval/api/v1/manifest")
-    entries = []
-    for tool in manifest.get("tools") or []:
-        name = str(tool.get("name") or "")
-        if not name:
-            continue
-        entries.append({"name": name, "title": name,
-                        "description": str(tool.get("description") or ""),
-                        "enabled": bool(tool.get("enabled", True))})
-    return {
-        "id": "esa-cockpit",
-        "name": "esa-cockpit（座舱 agent 链路）",
-        "description": (
-            "座舱评测链路：mock-system 是 MCP 记录代理，cockpit-mcp 是用户 MCP server"
-            "（工具与座舱状态），cockpit-agent 是被测座舱 agent。记录代理执行工具权限、"
-            "故障注入与逐事件状态差异，证据与评分和 esa 环境一致。"
-        ),
-        "tools": {"total": len(entries), "enabled": sum(1 for item in entries if item["enabled"]),
-                  "entries": entries},
-        "data": {"entities": [], "seed_sha256": str(manifest.get("seed_sha256") or "")},
-        "version": str(manifest.get("server_version") or ""),
-    }
+    return None
 
 
 def _read_runtime_json(url: str) -> dict:
@@ -202,25 +109,6 @@ def _read_manifest(harness_id: str) -> dict:
         "npm_package": str(data.get("npm_package") or ""),
     }
 
-
-def _read_esa_agent() -> dict | None:
-    data = _read_json(config.REPO_ROOT / _ESA_AGENT_JSON)
-    if not data:
-        return None
-    react = data.get("react") or {}
-    model = react.get("model") or {}
-    return {
-        "display_name": str(data.get("display_name") or ""),
-        "description": str(data.get("description") or ""),
-        "capabilities": [str(item) for item in data.get("capabilities") or []],
-        "instructions": str(react.get("instructions") or ""),
-        "model_defaults": {
-            key: model[key]
-            for key in ("model_id", "temperature", "top_p", "reasoning_effort")
-            if key in model
-        },
-        "context_continuity": str(react.get("context_continuity") or ""),
-    }
 
 
 def _read_json(path) -> dict:

@@ -1,0 +1,4 @@
+id: deepseek-pi-hello
+bench: hello
+harness: pi
+model: deepseek/deepseek-flash

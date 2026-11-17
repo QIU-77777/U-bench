@@ -1,8 +1,0 @@
-{
-  "case_id": "unconfigured",
-  "dataset_version": "esa-local-v1",
-  "seed": 0,
-  "user_messages": [],
-  "initial_state": {},
-  "tool_profile": []
-}

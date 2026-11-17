@@ -1,0 +1,4 @@
+id: go-claude-code-hello
+bench: hello
+harness: claude-code
+model: go/claude-haiku-5-5

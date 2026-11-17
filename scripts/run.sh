@@ -6,10 +6,10 @@
 # harness/<name>/manifest.yaml, and the job's image mount must match it.
 #
 # Usage:
-#   scripts/run.sh --bench esa --harness esa --model stepfun/step-5-preview
-#   scripts/run.sh --bench esa --harness esa --model stepfun/step-5-preview --dry-run
-#   scripts/run.sh --job deepseek-pi-hello
-#   AUTO_BUILD_HARNESS=1 scripts/run.sh --job deepseek-pi-hello
+#   scripts/run.sh --bench hello --harness opencode --model go/mimo-v2.6-flash
+#   scripts/run.sh --bench hello --harness claude-code --model go/claude-haiku-5-5 --dry-run
+#   scripts/run.sh --job go-opencode-hello
+#   AUTO_BUILD_HARNESS=1 scripts/run.sh --job go-opencode-hello
 #
 # Model connection comes from .env (one <PREFIX>_* group per provider, api
 # keys included), selected by the job config's `model: provider/model-id`:
@@ -44,8 +44,8 @@ Options:
   --help          Show this help
 
 Examples:
-  scripts/run.sh --bench esa --harness esa --model stepfun/step-5-preview
-  scripts/run.sh --job deepseek-pi-hello --dry-run
+  scripts/run.sh --bench hello --harness opencode --model go/mimo-v2.6-flash
+  scripts/run.sh --job go-opencode-hello --dry-run
 EOF
 }
 
@@ -71,11 +71,12 @@ esac
 PY=".venv/bin/python"
 [ -x "$PY" ] || { echo "ERROR: $PY not found — create the venv first (see README)." >&2; exit 1; }
 fail() { echo "ERROR: $*" >&2; exit 1; }
-if [ "$DRY_RUN" != "1" ]; then
-    [ -f .env ] || fail ".env not found (copy .env.example and fill the keys)."
+if [ -f .env ]; then
     set -a
     source .env || fail "could not load .env"
     set +a
+elif [ "$DRY_RUN" != "1" ]; then
+    fail ".env not found (copy .env.example and fill the keys)."
 fi
 
 if [ -n "$JOB_SLUG" ]; then
@@ -99,9 +100,9 @@ elif [ -n "$BENCH_SLUG$BENCH_FILE$HARNESS_SLUG$MODEL_SLUG" ]; then
     [ -n "$HARNESS_SLUG" ] || fail "--harness is required when using manual selection"
     [ -n "$MODEL_SLUG" ] || fail "--model is required when using manual selection"
 else
-    BENCH_SLUG="esa"
-    HARNESS_SLUG="esa"
-    MODEL_SLUG="stepfun/step-5-preview"
+    BENCH_SLUG="hello"
+    HARNESS_SLUG="opencode"
+    MODEL_SLUG="go/mimo-v2.6-flash"
 fi
 
 JOB_CONFIG="$("$PY" -c 'import os,tempfile; fd,path=tempfile.mkstemp(prefix="harbor-test-source.",suffix=".yaml"); os.close(fd); print(os.path.realpath(path))')"
@@ -131,30 +132,6 @@ if [ -n "$SCORER_CONFIG" ]; then
     )
 fi
 
-# ESA uses a Go runtime service rather than a coding harness image mount.
-# esa-cockpit shares the same fast path: the cockpit agent is a compose service,
-# not a mounted coding harness, so it must skip the coding-agent branch below.
-if [ "$HARNESS_SLUG" = "esa" ] || [ "$HARNESS_SLUG" = "esa-cockpit" ]; then
-    "$PY" - "$JOB_CONFIG" <<'PY'
-import sys
-import yaml
-from esa.reference import load_task
-from harbor.models.job.config import JobConfig
-config = yaml.safe_load(open(sys.argv[1]))
-JobConfig.model_validate(config)
-for task in config.get('tasks', []):
-    load_task(task['path'])
-PY
-    if [ "$DRY_RUN" = "1" ]; then
-        echo "ESA config accepted; references execute in the deployment before model calls."
-    else
-        # 座舱 agent 从 compose 读取模型标识，与 job 模型保持一致。
-        [ "$HARNESS_SLUG" = "esa-cockpit" ] && export COCKPIT_AGENT_MODEL_ID="$MODEL_SLUG"
-        PYTHONPATH="$PWD" .venv/bin/harbor run -c "$JOB_CONFIG" --job-name "$JOB_NAME" \
-            ${VERIFIER_ARGS[@]+"${VERIFIER_ARGS[@]}"} -y
-    fi
-    exit 0
-fi
 
 # ── 1) Combination declaration + .env group mapping ─────────────────────
 # run.sh reads both keys; harbor's JobConfig drops them (they are not

@@ -4,10 +4,6 @@
 # 本地环境与运行产物
 .venv/
 /jobs/
-/configs/jobs/*
-!/configs/jobs/esa-offline-acceptance.yaml
-!/configs/jobs/esa-oracle-acceptance.yaml
-!/configs/jobs/esa-cockpit-oracle-acceptance.yaml
 __pycache__/
 .DS_Store
 *.sqlite
