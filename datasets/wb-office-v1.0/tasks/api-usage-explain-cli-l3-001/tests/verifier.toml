@@ -1,0 +1,13 @@
+schema_version = "workbuddy.office.verifier.v1"
+
+[run]
+cwd = "/workspace"
+command = '''PYTHONPATH="/workspace:/tests/grading:${PYTHONPATH:-}" python -m pytest /tests/grading/test_verify.py   -p no:cacheprovider -v --tb=short   --junitxml=/logs/verifier/results.xml   > /logs/verifier/test_output.txt 2>&1'''
+
+[env]
+WB_BENCH_CASE_DIR = "/workspace"
+WB_BENCH_FIXTURES_DIR = "/tests/gold/fixtures"
+WB_BENCH_GOLD_PATH = "/tests/gold/gold_answer.json"
+WB_BENCH_OUTPUT_PATH = "/workspace/final_answer.md"
+WB_BENCH_VERIFIER_LOGS = "/logs/verifier"
+WB_BENCH_WORKSPACE = "/workspace"

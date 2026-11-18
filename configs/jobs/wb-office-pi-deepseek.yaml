@@ -1,0 +1,8 @@
+# First end-to-end wb-office run: pi harness (glibc build) + deepseek-flash.
+# pi-debian is required here: the wb-office task images are Debian-based
+# (python:3.12-slim) and the default alpine-built harness/pi node binary
+# cannot execute in them. See harness/pi-debian/manifest.yaml.
+# Usage: scripts/run.sh --job wb-office-pi-deepseek
+bench: wb-office
+harness: pi-debian
+model: deepseek/deepseek-flash

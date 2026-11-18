@@ -123,6 +123,9 @@ def main() -> int:
                 "import_path": harness["import_path"],
                 "model_name": args.model,
                 "kwargs": copy.deepcopy(harness.get("kwargs") or {}),
+                # Optional harness-level env (e.g. PATH when the harness image
+                # mounts outside /usr/local). Harbor scopes it to agent phases.
+                "env": copy.deepcopy(harness.get("env") or {}),
             }
         ],
     }
@@ -156,6 +159,9 @@ def main() -> int:
                 "import_path": harness["import_path"],
                 "model_name": args.model,
                 "kwargs": copy.deepcopy(harness.get("kwargs") or {}),
+                # Optional harness-level env (e.g. PATH when the harness image
+                # mounts outside /usr/local). Harbor scopes it to agent phases.
+                "env": copy.deepcopy(harness.get("env") or {}),
             }
         ]
         if args.harness == "opencode":

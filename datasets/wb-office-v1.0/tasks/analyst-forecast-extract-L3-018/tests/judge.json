@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "id": "forecast_workbook",
+      "path": "output/analyst_forecast_extract.xlsx",
+      "required": true,
+      "type": "xlsx"
+    },
+    {
+      "id": "forecast_metadata",
+      "path": "output/analyst_forecast_extract.json",
+      "required": true,
+      "type": "json"
+    }
+  ],
+  "llm_judge": {
+    "method": "rubric_binary_mean",
+    "rubrics": [
+      {
+        "id": "expanded_major_sections_are_not_contradictory",
+        "question": "Do major sections avoid material contradictions about the same records, counts, or decisions?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Major workbook/JSON/markdown sections agree on material row counts, entities, statuses, periods, and decision categories, allowing for clearly labeled section-specific scope.",
+          "Duplicate or repeated records are acceptable only when their purpose or distinct scope is visible."
+        ],
+        "fail_criteria": [
+          "Two major sections give materially conflicting counts, statuses, entities, periods, or decisions for the same scope without explanation.",
+          "The same record appears in incompatible clean/exception populations or with contradictory categories without a visible reason."
+        ]
+      },
+      {
+        "id": "expanded_summary_uses_same_scope_as_details",
+        "question": "Do summary, rollup, or metadata sections use the same entity, period, status, and inclusion scope as the detail records they summarize?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Summary counts, totals, statuses, or conclusions align with visible detail sections by entity, period/window, inclusion/exclusion scope, and decision labels.",
+          "If a summary intentionally uses a different scope, the difference is explicitly labeled."
+        ],
+        "fail_criteria": [
+          "A summary/rollup appears to count or conclude over a different population than the visible details without saying so.",
+          "Summary labels or statuses conflict with detail-row labels for the same records."
+        ]
+      },
+      {
+        "id": "expanded_json_source_lists_do_not_replace_row_trace",
+        "question": "Do JSON source lists complement rather than replace row-level trace?",
+        "artifact_refs": [
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Global source lists are accompanied by row-level source references for material decisions.",
+          "A reviewer can connect each decision to a source or evidence key."
+        ],
+        "fail_criteria": [
+          "The JSON only lists sources globally while decisions lack trace.",
+          "Source lists are too broad to support individual records."
+        ]
+      },
+      {
+        "id": "expanded_summary_is_reconcilable_to_details",
+        "question": "Can a reviewer reconcile summary counts or claims back to detailed rows?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Summary labels correspond to detailed status labels, sheets, or record categories.",
+          "The artifact provides enough grouping fields, counts, or references to trace summary values."
+        ],
+        "fail_criteria": [
+          "Summary categories cannot be matched to detailed row categories.",
+          "Important summary values appear without any visible detailed support."
+        ]
+      },
+      {
+        "id": "forecast_missing_fields_are_not_inferred_from_context",
+        "question": "Are missing target prices, missing numeric forecasts, and non-target records kept from being inferred into clean forecast facts?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Rows with missing target price, missing numeric forecast, non-target company, or aggregate-only source are placed in missing or exception areas.",
+          "Clean forecast rows do not visibly include guessed values for those exception records."
+        ],
+        "fail_criteria": [
+          "Missing target prices or numeric forecasts are filled from context without a visible source.",
+          "Non-target or aggregate-only records appear as normal company-level forecast facts."
+        ]
+      },
+      {
+        "id": "forecast_rows_bind_metric_period_and_source",
+        "question": "Do extracted forecast rows bind each analyst forecast metric to a visible period and source context?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Material forecast rows include metric identity, forecast period or reporting horizon, and a concrete source, analyst, report, or extraction key.",
+          "Rows that aggregate or normalize values preserve enough source context to tell which original forecast statement produced the normalized row."
+        ],
+        "fail_criteria": [
+          "Forecast rows provide normalized values without visible period or source context.",
+          "Multiple forecast horizons, metrics, or source reports are blended together without an auditable row-level basis."
+        ]
+      },
+      {
+        "id": "forecast_source_trace_preserves_table_or_section_origin",
+        "question": "Do forecast rows preserve source origin at the table row, workbook range, report section, or equivalent extraction location level?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Extracted forecast, rating, and target-price rows include source file plus row, section, sheet-range, or equivalent location context.",
+          "If normalized metadata summarizes sources, it does not replace row-level source locations with only generic document names."
+        ],
+        "fail_criteria": [
+          "Source trace names only broad files or broker names while omitting row, section, sheet, or extraction-location context.",
+          "Main extracted facts cannot be traced to a concrete location in the static input evidence."
+        ]
+      },
+      {
+        "id": "metadata_summarizes_normalization_contract",
+        "question": "Does the JSON metadata summarize the normalization contract used by the workbook?",
+        "artifact_refs": [
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "The JSON mentions the case, workbook, target company, row counts, or normalization rules.",
+          "It reflects static-file normalization rather than external market lookup."
+        ],
+        "fail_criteria": [
+          "The JSON is missing the requested metadata role.",
+          "It relies on live market data, recommendations, or unexplained external assumptions."
+        ]
+      },
+      {
+        "id": "source_trace_is_visible",
+        "question": "Do extracted records include visible source trace information that would let a reviewer locate supporting input files or sections?",
+        "artifact_refs": [
+          "forecast_workbook",
+          "forecast_metadata"
+        ],
+        "pass_criteria": [
+          "Extracted fact rows include source files, source rows, sections, or equivalent trace fields.",
+          "Metadata or workbook content indicates which input sources were used."
+        ],
+        "fail_criteria": [
+          "Main extracted facts have no visible source trace.",
+          "Source trace fields are blank, generic, or unrelated to the provided static files."
+        ]
+      },
+      {
+        "id": "workbook_matches_forecast_deliverable",
+        "question": "Does the workbook read like the requested analyst forecast extraction deliverable rather than notes or an unrelated table?",
+        "artifact_refs": [
+          "forecast_workbook"
+        ],
+        "pass_criteria": [
+          "The visible sheets or tables correspond to forecast fields, rating changes, target prices, and missing or excluded records.",
+          "Rows are organized as structured extraction records rather than prose-only commentary."
+        ],
+        "fail_criteria": [
+          "The workbook is missing, unrelated, or mostly free-form notes.",
+          "It does not visibly separate extracted facts from exceptions or missing fields."
+        ]
+      }
+    ]
+  },
+  "score_merge": {
+    "method": "weighted_sum",
+    "rule_weight": 0.8,
+    "llm_weight": 0.2
+  }
+}

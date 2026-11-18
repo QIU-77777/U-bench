@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "id": "judge_scope_and_gate_status",
+      "path": "judge_evidence/judge_scope_and_gate_status.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "submitted_deck_slide_text",
+      "path": "judge_evidence/submitted_deck_slide_text.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "base_vs_submitted_slide_delta",
+      "path": "judge_evidence/base_vs_submitted_slide_delta.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "public_workbook_update_summary",
+      "path": "judge_evidence/public_workbook_update_summary.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "public_base_deck_role_summary",
+      "path": "judge_evidence/public_base_deck_role_summary.md",
+      "required": true,
+      "type": "md"
+    }
+  ],
+  "llm_judge": {
+    "method": "rubric_binary_mean",
+    "rubrics": [
+      {
+        "id": "cross_slide_governance_chain_integration",
+        "dimension": "content_semantic_quality",
+        "purpose": "discriminative_rubric",
+        "question": "Based only on the text-only Judge evidence, do the current-scope procurement, sample-freeze, training, risk-downgrade evidence, review cadence, and resource-communication updates read as one connected governance story across the relevant board-deck slide roles, rather than as isolated patches or copied workbook rows?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_deck_slide_text",
+          "base_vs_submitted_slide_delta",
+          "public_workbook_update_summary",
+          "public_base_deck_role_summary"
+        ],
+        "public_requirement_source": "The public task requires revising the board material from the public workbook update register while preserving a board-facing deck; the public deck/workbook summaries expose the current governance scope and slide roles.",
+        "concrete_signals": [
+          "Procurement status, sample-freeze dependency, training timing, risk-downgrade evidence, review cadence, and resource communication are all represented in mutually consistent current-scope terms.",
+          "Overview, timeline/workstream, decision-risk, and resource/communication slide roles each carry the part of the story appropriate to that surface.",
+          "Slide text synthesizes related public rows into board-material relationships instead of pasting raw row fragments or disconnected chips."
+        ],
+        "discrimination_target": "Separates decks that perform a coherent current board update from decks that satisfy some local string edits while leaving the governance chain fragmented, contradictory, or inferable only from hidden context.",
+        "acceptable_pass_output": "A near-gold or otherwise valid deck can use different concise wording and slide-local organization, but a board reader must be able to trace the procurement, sample-freeze, training, risk-evidence, cadence, and resource-communication chain from visible deck text and public summaries.",
+        "not_score_chasing_rationale": "This rubric responds to the J1 saturation finding that full-Judge outputs still showed visible cross-slide integration defects; it does not require one model's wording or reward any exact hidden oracle phrase.",
+        "fairness_rationale": "Any model can pass by using public evidence to produce a connected board-facing narrative; the rubric is text-only, artifact-visible, and independent of tool path or model identity.",
+        "pass_criteria": [
+          "The submitted deck visibly links current-scope procurement, sample-freeze, training, risk-downgrade evidence, review cadence, and resource communication into one coherent board story across relevant slide roles.",
+          "Cross-slide relationships do not contradict each other, especially procurement awaiting confirmation, sample-freeze as a precondition, training timing, risk evidence timing/window, and follow-up cadence.",
+          "The relevant slides adapt public workbook/deck evidence to their roles instead of relying on footer-only changes, chip-only mentions, raw-row paste, or hidden inference."
+        ],
+        "fail_criteria": [
+          "One or more required governance-chain elements are absent from the connected visible story or appear only as isolated footer text, status chips, or copied workbook snippets.",
+          "Procurement, sample-freeze, training, risk-evidence, cadence, or resource-communication snippets contradict each other or require the Judge to infer the relationship from hidden oracle knowledge.",
+          "Current, historical, future-draft, monitoring-only, or template facts are blended so that the current board story is ambiguous.",
+          "Required text-only evidence is missing, unreadable, unsafe, or insufficient for Judge activation."
+        ],
+        "near_miss_fail_criteria": [
+          "A complete-looking deck that updates overview and risk text but leaves resource communication as an old generic footer or standalone chip without linking it to the current governance chain should fail.",
+          "A deck that copies all relevant workbook rows into slide text but never turns them into a coherent board story should fail."
+        ],
+        "scope_limits": [
+          "Deterministic verifier owns exact dates, statuses, required strings, stale-string absence, co-location, file validity, slide count/order, object preservation, source hashes, and safety/leakage.",
+          "Do not compare against hidden oracle prose, require a preferred phrase, or use external facts beyond the public task inputs and Judge evidence.",
+          "Do not use rendered slide appearance, screenshots, OCR, VLM, pixel layout, model traces, private traces, or live services."
+        ]
+      },
+      {
+        "id": "board_decision_priority_and_timing_visibility",
+        "dimension": "content_semantic_quality",
+        "purpose": "discriminative_rubric",
+        "question": "Based only on the text-only Judge evidence, can a board reader see the pending procurement confirmation, sample-freeze precondition, procurement timing, risk-evidence deadline or window, and review cadence on the overview, decision-risk, and action-oriented surfaces without needing hidden reasoning?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_deck_slide_text",
+          "base_vs_submitted_slide_delta",
+          "public_workbook_update_summary",
+          "public_base_deck_role_summary"
+        ],
+        "public_requirement_source": "The public task and public workbook/deck summaries require a revised governance board deck whose current decision and timing implications are visible to the board reader.",
+        "concrete_signals": [
+          "Pending procurement confirmation is visible as a board decision item rather than implied or treated as completed.",
+          "Sample-freeze precondition, procurement timing, risk-evidence deadline/window, and review cadence appear on overview, decision-risk, resource/communication, or other action surfaces where a board reader would look for them.",
+          "Current-scope timing is prioritized over routine, historical, future-draft, monitoring-only, or template detail."
+        ],
+        "discrimination_target": "Separates decks that make decision priority and timing visible from decks that bury or scatter these requirements despite satisfying some exact deterministic strings.",
+        "acceptable_pass_output": "A valid deck may distribute the timing signals across appropriate slide roles, but the overview/decision-risk/action surfaces must let a board reader identify the pending decision, its precondition, timing window, risk follow-up, and review rhythm from visible text.",
+        "not_score_chasing_rationale": "The rubric targets a J1-visible weak-deadline and priority-surfacing gap, while leaving exact string and date validation to deterministic checks.",
+        "fairness_rationale": "The criterion is grounded in public evidence and audience needs, not in a specific phrasing, deck template trick, or model-specific artifact.",
+        "pass_criteria": [
+          "The deck makes pending procurement confirmation, sample-freeze precondition, procurement timing, risk-evidence deadline/window, and review cadence visibly available on overview, decision-risk, and/or action-oriented slide surfaces.",
+          "Decision and timing signals are prioritized enough that a board reader can distinguish them from routine status, historical context, monitoring-only notes, future drafts, or examples.",
+          "The deck frames timing and priority through visible board-facing text rather than hidden reasoning, exact hidden wording, or an implied workbook lookup."
+        ],
+        "fail_criteria": [
+          "Any required timing or priority signal is missing, buried in low-value detail, scattered without a board-visible relationship, or only inferable from the source workbook.",
+          "Procurement confirmation is presented as already completed, disconnected from sample-freeze, or not visible as a pending governance action.",
+          "Risk-evidence deadline/window or review cadence is absent from decision-risk/action surfaces or conflicts with other visible deck text.",
+          "Required text-only evidence is missing, unreadable, unsafe, or insufficient."
+        ],
+        "near_miss_fail_criteria": [
+          "A structurally compliant deck that includes the right exact date strings but leaves the board decision, precondition, and cadence buried in a raw update list should fail.",
+          "A deck with a polished overview but no board-visible risk-evidence window or review cadence on decision/action surfaces should fail."
+        ],
+        "scope_limits": [
+          "Do not score exact date values, exact required strings, row order, status-token correctness, co-location, or deterministic pass/fail facts; deterministic verifier owns those checks.",
+          "Do not require a hidden priority ranking or one preferred summary phrase.",
+          "Do not use visual layout, rendered emphasis, screenshots, OCR, VLM, pixel scoring, external governance doctrine, or private context."
+        ]
+      },
+      {
+        "id": "board_facing_readiness_and_concision",
+        "dimension": "writing_style_quality",
+        "purpose": "shared_deficit_quality_gate",
+        "question": "Based only on the submitted slide text and text delta evidence, do the current-facing slides read like a concise revised zh-CN governance board deck, not a stale work draft, update checklist, raw workbook dump, backstage note, or model/evaluator artifact?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_deck_slide_text",
+          "base_vs_submitted_slide_delta",
+          "public_workbook_update_summary",
+          "public_base_deck_role_summary"
+        ],
+        "public_requirement_source": "The public task asks for an updated board-material PPTX, so the visible output text should be suitable for board consumption rather than exposing drafting, checklist, workbook-copy, or benchmark-process language.",
+        "concrete_signals": [
+          "Current-facing slide titles, bullets, table cells, timeline labels, reminders, and footers use concise zh-CN board-material wording with only ordinary office/status tokens where useful.",
+          "The revised deck avoids stale draft labels, update-instruction language, raw workbook row dumps, model/tool/evaluator commentary, and backstage process notes.",
+          "Text remains slide-consumable rather than becoming a prose report or worksheet transcript."
+        ],
+        "shared_deficit_quality_gate_target": "Prevents broad Judge saturation by failing outputs that are mechanically compliant but still visibly unsuitable as current board material.",
+        "acceptable_pass_output": "A near-gold or otherwise valid deck can retain compact office-style labels and mixed ordinary status tokens, but it must read as a revised governance deck for a board audience.",
+        "not_score_chasing_rationale": "The gate addresses J1-observed shared defects in stale draft/backstage language and does not reward a particular model's writing style or hidden wording.",
+        "fairness_rationale": "The requirement follows the public artifact genre and is judged only from visible text; it does not depend on rendering quality, tool choices, or private process knowledge.",
+        "pass_criteria": [
+          "Current-facing slide text is concise, primarily zh-CN, and appropriate for a revised governance board deck.",
+          "The deck avoids stale work-draft labels, update checklist tone, raw workbook dumps, backstage/model/evaluator/process language, and unnecessary implementation notes.",
+          "Text density and wording remain suitable for slide consumption while preserving board-facing scope, decision, risk, cadence, and action meaning."
+        ],
+        "fail_criteria": [
+          "Current-facing slides read like an unfinished work draft, update checklist, raw workbook export, Markdown/report narrative, backstage note, or benchmark/model/evaluator artifact.",
+          "Stale labels, instruction-like notes, or process commentary remain prominent enough to undermine board-facing readiness.",
+          "The deck uses verbose paragraphs, raw row lists, or English-heavy unnatural text beyond ordinary office/status tokens.",
+          "Required text-only evidence is missing, unreadable, unsafe, or insufficient."
+        ],
+        "near_miss_fail_criteria": [
+          "A deck that has the right current facts but leaves visible labels such as draft/update checklist/process notes on board-facing slides should fail.",
+          "A deck that converts the slides into long prose or worksheet-like raw rows while preserving factual content should fail."
+        ],
+        "scope_limits": [
+          "Do not score fonts, colors, object positions, rendered spacing, visual polish, screenshots, OCR, VLM, pixel layout, or slide aesthetics.",
+          "Do not require exact hidden oracle wording, a specific literary style, or exact phrase matching.",
+          "Deterministic verifier owns file safety, required strings, forbidden stale strings, extra artifacts, private leakage, objective zh-CN dominance checks, and structural validity."
+        ]
+      },
+      {
+        "id": "resource_communication_actionability",
+        "dimension": "content_semantic_quality",
+        "purpose": "discriminative_rubric",
+        "question": "Based only on the text-only Judge evidence, do the resource and communication surfaces adapt the current public update rows into actionable timing and cadence linked to sample freeze, procurement confirmation, training start, and risk follow-up, rather than retaining an old generic schedule or footer-only update?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_deck_slide_text",
+          "base_vs_submitted_slide_delta",
+          "public_workbook_update_summary",
+          "public_base_deck_role_summary"
+        ],
+        "public_requirement_source": "The public task requires updating the governance deck from the current workbook register; the public deck summary identifies communication and resource surfaces that should carry action timing for board follow-up.",
+        "concrete_signals": [
+          "Resource/communication text turns current rows into visible next-step timing, owner-facing cadence, or follow-up language.",
+          "The communication surface links sample freeze, procurement confirmation, training start, and risk follow-up instead of treating them as unrelated row facts.",
+          "Old generic schedule text, stale footer-only edits, and non-current communication plans are replaced or bounded by current-scope action language."
+        ],
+        "discrimination_target": "Captures the J1 isolated communication-slide gap where broad rubrics gave full credit despite generic old-schedule content and only superficial current-scope updates.",
+        "acceptable_pass_output": "A valid deck may use concise schedule or cadence wording, but the resource/communication surfaces must make the current timing and follow-up actions usable to a board reader.",
+        "not_score_chasing_rationale": "This rubric was added because the audit found a repeatable resource and communication actionability defect, not because a particular model missed a preferred phrase.",
+        "fairness_rationale": "The check uses only public workbook/deck evidence and visible submitted text; it rewards actionability across artifact roles rather than any model-specific wording or layout.",
+        "pass_criteria": [
+          "Resource/communication surfaces visibly adapt current rows into actionable timing or cadence tied to sample freeze, procurement confirmation, training start, and risk follow-up.",
+          "The text indicates how resource or communication follow-up should proceed for the current governance cycle, not merely that updates exist.",
+          "Old generic schedules, stale communication wording, and footer-only/chip-only patches do not remain as the primary resource/communication message."
+        ],
+        "fail_criteria": [
+          "Resource/communication content stays generic, old-schedule oriented, or disconnected from sample freeze, procurement confirmation, training start, and risk follow-up.",
+          "Current-scope updates appear only in a footer, isolated status chip, copied row, or unrelated note without actionable timing/cadence.",
+          "The surface overstates completion, uses historical/future/monitoring rows as current action items, or conflicts with decision/risk timing elsewhere in the deck.",
+          "Required text-only evidence is missing, unreadable, unsafe, or insufficient."
+        ],
+        "near_miss_fail_criteria": [
+          "A deck that correctly updates overview and decision-risk slides but leaves the communication/resource slide as an old generic schedule should fail.",
+          "A deck that adds current terms to the footer only while the main communication body remains stale or unactionable should fail."
+        ],
+        "scope_limits": [
+          "Deterministic verifier owns exact dates, statuses, required strings, stale-text absence, co-location, object preservation, file validity, source hashes, and safety/leakage.",
+          "Do not require a hidden communication plan, preferred phrase, exact date validation, external governance facts, or private context.",
+          "Do not use rendered layout, screenshots, OCR, VLM, pixel scoring, or model/tool traces."
+        ]
+      }
+    ]
+  },
+  "activation_policy": {
+    "deterministic_component_transparency_required": true,
+    "deterministic_partial_pass_allowed": true,
+    "deterministic_full_pass_required": false,
+    "required_evidence_files_must_exist": true,
+    "required_evidence_files": [
+      "judge_evidence/judge_scope_and_gate_status.md",
+      "judge_evidence/submitted_deck_slide_text.md",
+      "judge_evidence/base_vs_submitted_slide_delta.md",
+      "judge_evidence/public_workbook_update_summary.md",
+      "judge_evidence/public_base_deck_role_summary.md"
+    ],
+    "deterministic_failure_policy": "preserve_failed_checks_and_do_not_mark_objective_failures_passed",
+    "missing_or_unready_evidence_policy": "skip_llm_judge_and_preserve_deterministic_component_score",
+    "modality": "text_only_non_multimodal",
+    "public_instruction": "instruction.md",
+    "approved_public_inputs": [
+      "input/quarterly_governance_board_deck.pptx",
+      "input/program_milestone_update_register.xlsx",
+      "environment/local_fixture_notes.txt"
+    ],
+    "approved_public_outputs": [
+      "output/quarterly_governance_board_deck_revised.pptx"
+    ],
+    "note": "Supplemental text-only WB Judge may run when verifier-produced judge_evidence files exist and deterministic safety allows activation. Judge must preserve deterministic component fields and failed_checks separately and must never hide, forgive, or reinterpret objective deterministic failures as passed."
+  },
+  "score_merge": {
+    "method": "weighted_sum",
+    "rule_weight": 0.8,
+    "llm_weight": 0.2,
+    "pass_threshold": 0.8,
+    "llm_pass_threshold": 0.75,
+    "preserve_components": [
+      "deterministic_component_score",
+      "deterministic_pass_rate",
+      "deterministic_gated_pass",
+      "failed_checks",
+      "llm_judge_component_score",
+      "llm_judge_status",
+      "score_source_notes",
+      "validity_notes"
+    ],
+    "write_back_policy": "Merge when all required judge_evidence files exist, wb_judge status is completed, and llm_judge is non-null; deterministic full pass is not required. Preserve deterministic component fields and failed_checks separately, and never claim objective deterministic failures are semantically passed by the LLM Judge."
+  }
+}

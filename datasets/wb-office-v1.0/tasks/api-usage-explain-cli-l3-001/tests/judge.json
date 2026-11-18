@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "id": "submitted_usage_explanation_text",
+      "path": "artifact_text/final_answer.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "deterministic_eval_result",
+      "path": "artifact_text/deterministic_eval_result.json",
+      "required": true,
+      "type": "json"
+    },
+    {
+      "id": "citation_records",
+      "path": "artifact_text/citation_records.json",
+      "required": true,
+      "type": "json"
+    }
+  ],
+  "llm_judge": {
+    "method": "rubric_binary_mean",
+    "rubric_admissibility_gate": {
+      "binary": true,
+      "evidence_visible": true,
+      "public_input_or_submitted_artifact_only": true,
+      "hidden_gold_context_forbidden": true,
+      "deterministic_failure_compensation_forbidden": true,
+      "exact_fact_or_source_binding_rescore_forbidden": true,
+      "private_or_model_log_evidence_forbidden": true,
+      "vlm_judge_forbidden": true,
+      "runtime_or_live_service_evidence_forbidden": true
+    },
+    "rubrics": [
+      {
+        "id": "claim_citation_support_quality",
+        "question": "Does the usage explanation make the material technical claims it actually presents traceable to nearby concrete public workspace citations, rather than using citations as decorative path lists or unsupported authority?",
+        "artifact_refs": [
+          "submitted_usage_explanation_text",
+          "citation_records",
+          "deterministic_eval_result"
+        ],
+        "pass_criteria": [
+          "Material claims that are present in the answer about commands, flags, Python API entry points, config behavior, output formats, examples, or unsupported features are near concrete public workspace path citations or clearly grouped under a cited evidence paragraph.",
+          "The cited paths are used to support the meaning of the nearby claim, such as linking a caveat to a parser/source/schema/doc relationship, not merely collected in a final undifferentiated bibliography.",
+          "The answer does not launder broad conclusions through vague path mentions; a reader can tell which cited public file supports which class of claim.",
+          "Alternative Chinese wording, section names, or ordering pass when claim-to-citation support remains clear."
+        ],
+        "fail_criteria": [
+          "Important technical claims that the answer chooses to make are mostly uncited, or citations appear only as a generic list disconnected from those claims.",
+          "The explanation cites files but makes claims that are not meaningfully connected to those visible citations.",
+          "Citations are used as decorative anchors while the surrounding prose does not explain or imply the evidence relationship.",
+          "Required evidence is missing, unreadable, unsafe, or too sparse to evaluate citation support quality."
+        ],
+        "scope_limits": [
+          "Do not score omitted required surfaces, exact required path counts, exact path validity, exact hidden expected fact recall, exact schema fields, or deterministic source-family coverage; verifier owns those objective checks.",
+          "Do not use hidden gold, construction notes, private traces, external web knowledge, live execution, model logs, or VLM/pixel evidence."
+        ]
+      },
+      {
+        "id": "developer_manual_actionability_and_coherence",
+        "question": "Is the Chinese Markdown explanation coherent and actionable as a developer-facing usage guide, with enough beginning-to-end structure for a reader to understand how the CLI, Python API, config/schema behavior, examples, output formats, and caveats fit together without repairing the answer themselves?",
+        "artifact_refs": [
+          "submitted_usage_explanation_text",
+          "citation_records",
+          "deterministic_eval_result"
+        ],
+        "pass_criteria": [
+          "The substantive guide body is organized around a developer's use path rather than a flat dump of filenames, isolated facts, or late-stage appendix notes.",
+          "Ignoring any superficial opening-frame issue already covered by `final_answer_framing_and_markdown_integrity`, the body still gives enough actionable structure for a reader to decide how to use the tool.",
+          "CLI behavior and Python API behavior are clearly distinguished at the level needed to decide which surface to use, including how rendering/output choices differ between CLI and API use.",
+          "Config/default/profile/schema and output-format relationships are explained in reader-understandable terms, not only named as tokens.",
+          "Caveats are placed where they help the reader avoid wrong commands, unsupported options, or overconfident conclusions."
+        ],
+        "fail_criteria": [
+          "The explanation is a checklist-like collection of terms and paths without a coherent usage flow.",
+          "The body only covers later examples, output details, caveats, or reading-path notes while omitting the core developer orientation needed to use CLI/API/config surfaces.",
+          "CLI, Python API, config, schema, examples, output, and caveats are mixed together so the reader cannot tell what to do next.",
+          "It is so terse, repetitive, or internally disorganized that a developer would need to re-read the source repository to recover the intended usage.",
+          "Required evidence is missing, unreadable, unsafe, or too sparse to evaluate developer-manual coherence."
+        ],
+        "scope_limits": [
+          "Do not require a particular heading title, section order, length, table format, prose style, or oracle wording.",
+          "Do not penalize concise writing if the usage flow and role boundaries remain clear.",
+          "Do not fail merely because the opening has process narration or continuation wording; that is owned by the final-answer framing rubric.",
+          "Do not rescore exact deterministic fact coverage or failed exact-check lists; deterministic_eval_result is context only for visible status and failure attribution."
+        ]
+      },
+      {
+        "id": "final_answer_framing_and_markdown_integrity",
+        "question": "Is the submitted final answer a clean user-facing Chinese Markdown deliverable, without process narration, continuation fragments, or broken code/path markup that makes key CLI/API terms hard to read?",
+        "artifact_refs": [
+          "submitted_usage_explanation_text"
+        ],
+        "pass_criteria": [
+          "The answer begins as a final user-facing Chinese Markdown guide or directly useful summary, not as model process narration, scratch-work narration, or a continuation of an earlier incomplete answer.",
+          "Code identifiers, package names, CLI commands/options, file paths, and links remain readable as Markdown, even if the exact heading style or citation syntax differs.",
+          "Minor formatting imperfections pass when they do not obscure important technical terms or make the answer look like an intermediate trace."
+        ],
+        "fail_criteria": [
+          "The answer starts with process or trace narration such as \"Now I have...\", \"现在我已经...\", \"让我整理...\", or similar non-deliverable framing before the requested guide.",
+          "The answer starts mid-stream or as a continuation fragment, such as \"继续未输出完的部分\", so it is visibly not a complete final response.",
+          "Obvious broken Markdown around important package names, CLI/API identifiers, file paths, or citations makes the guide less readable or less professional as the requested final Markdown answer."
+        ],
+        "scope_limits": [
+          "Do not require a specific title, heading numbering scheme, table layout, prose length, or oracle wording.",
+          "Do not use model logs or hidden traces to infer process leakage; judge only visible submitted answer text."
+        ]
+      },
+      {
+        "id": "source_grounded_caveat_actionability",
+        "question": "Are caveats about stale, roadmap, experimental, ambiguous, or unsupported behavior source-grounded and actionable enough for a developer to know what not to use and why?",
+        "artifact_refs": [
+          "submitted_usage_explanation_text",
+          "citation_records",
+          "deterministic_eval_result"
+        ],
+        "pass_criteria": [
+          "Material caveats link the unsupported or ambiguous item to a concrete visible reason, such as parser not registering a command/flag, API not exporting a helper, a `NotImplementedError` stub, schema absence, docs/source mismatch, or roadmap-only note.",
+          "The answer avoids over-uncertainty when the local parser/source/schema visibly resolves the behavior, and avoids overconfidence when the public materials genuinely conflict or omit a contract.",
+          "Stale and roadmap items are not merely labeled; the explanation gives a developer a usable decision rule for whether to rely on them."
+        ],
+        "fail_criteria": [
+          "Caveats are mostly generic labels such as \"experimental\", \"future\", \"not documented\", or \"unclear\" without explaining the source relationship that makes them unsupported or ambiguous.",
+          "The answer claims uncertainty even though the submitted evidence it cites resolves the behavior, or claims support despite cited materials showing only legacy/roadmap/experimental status.",
+          "The caveat section is broad and polished but does not help a developer decide which commands, options, APIs, or output modes are safe to use now."
+        ],
+        "scope_limits": [
+          "Do not rescore exact required unsupported-feature keywords or exact factual recall; deterministic checks own those objective facts.",
+          "Do not require hidden gold wording; use only visible final answer text, citation records, and transparent deterministic failure summaries."
+        ]
+      },
+      {
+        "id": "self_contained_developer_usage_flow",
+        "question": "Is the guide self-contained enough that a developer can understand the main CLI/API, config/schema/output, examples, and unsupported-feature boundaries without having to reconstruct missing earlier sections from the source repository?",
+        "artifact_refs": [
+          "submitted_usage_explanation_text",
+          "deterministic_eval_result"
+        ],
+        "pass_criteria": [
+          "The substantive answer body has enough beginning-to-end structure to stand alone as the requested usage explanation, even if concise or ordered differently from the oracle.",
+          "It covers the relationships among CLI use, Python API use, config/default/profile behavior, output formats, examples, and caveats as a coherent guide rather than disconnected late-stage notes.",
+          "Deterministic omissions may exist, but the reader can still recover the main usage path from the submitted text without relying on unseen earlier sections."
+        ],
+        "fail_criteria": [
+          "The body contains only a later fragment, appendix-like remainder, or tail section dump, so the reader cannot recover the main usage path from the submitted text.",
+          "The output is organized as isolated facts or caveats without enough surrounding guide context to decide how to use the tool.",
+          "Major structural omissions make the guide non-self-contained even if some individual facts and citations are correct."
+        ],
+        "scope_limits": [
+          "Do not require all deterministic facts to be present or use this rubric to duplicate exact fact-count checks.",
+          "Do not fail merely because the opening has process narration or continuation wording; that is owned by the final-answer framing rubric.",
+          "Deterministic_eval_result is context only; do not use failed exact-check lists to rescore exact fact omissions.",
+          "Any section order, title wording, table/list mix, or concise style can pass if the guide body is complete enough as a final answer."
+        ]
+      }
+    ]
+  },
+  "activation_policy": {
+    "deterministic_component_transparency_required": true,
+    "deterministic_partial_pass_allowed": true,
+    "deterministic_full_pass_required": false,
+    "run_when_configured_and_backend_available": true,
+    "rule_score_activation_gate": "none",
+    "required_evidence_files_must_exist": true,
+    "artifact_level_required_evidence": true,
+    "required_evidence_files": [
+      "artifact_text/final_answer.md",
+      "artifact_text/deterministic_eval_result.json",
+      "artifact_text/citation_records.json"
+    ],
+    "deterministic_failure_policy": "Preserve deterministic component score, failed_checks, objective failure details, preflight status, and test_pass_rate separately. WB Judge is complementary and must never hide, forgive, reinterpret, or mark objective deterministic failures as passed.",
+    "missing_or_unready_evidence_policy": "skip_llm_judge_and_preserve_deterministic_component_score",
+    "modality": "text_only_non_multimodal",
+    "uses_vlm_judge": false,
+    "public_instruction": "instruction.md",
+    "approved_public_inputs": [
+      "instruction.md",
+      "input/sample_workspace/citrinectl/**"
+    ],
+    "approved_public_outputs": [
+      "final answer Markdown text"
+    ],
+    "prohibited_evidence": [
+      "hidden gold or oracle answer",
+      "deterministic verifier internals beyond transparent scope/status summaries and failed-check attribution",
+      "construction notes or construction-only relation graphs",
+      "private trace/source context, private paths, private URLs, private emails, account IDs, credentials, tokens, customer data, proprietary code, or unpublished private assets",
+      "model logs, tool traces, final-agent reply quality, raw cb_bench logs, proxy logs, or instance manifests",
+      "external web knowledge, live services, browser/API behavior, network results, code execution, compilation, MCP, or Skill evidence",
+      "screenshots, OCR text, VLM/image understanding, audio/video understanding, rendered thumbnails, or pixel-level scoring"
+    ],
+    "note": "Supplemental text-only WB Judge may run when verifier-produced artifact_text files exist and deterministic component score, failed_checks, and objective failure status are preserved separately. Judge scoring is bounded to claim-citation binding quality, developer-manual coherence, final-answer framing/Markdown integrity, source-grounded caveat actionability, and self-contained usage flow."
+  },
+  "score_merge": {
+    "method": "weighted_sum",
+    "rule_weight": 0.8,
+    "llm_weight": 0.2,
+    "pass_threshold": 0.8,
+    "llm_pass_threshold": 0.67,
+    "preserve_components": [
+      "deterministic_component_score",
+      "deterministic_pass_rate",
+      "deterministic_gated_pass",
+      "failed_checks",
+      "llm_judge_component_score",
+      "llm_judge_status",
+      "score_source_notes",
+      "validity_notes"
+    ],
+    "write_back_policy": "Follow current cb_bench WB Judge write-back semantics when wb_judge completes: reward.json may contain llm_judge, llm_judge_status, score_merge, and merged overall, while test_pass_rate remains the deterministic rule score. Merge when required judge evidence exists and llm_judge is non-null; deterministic full pass is not required. Never use Judge scoring to compensate deterministic factual, output-contract, citation/path, safety, state-diff, no-mutation, parsing, or boundary failures."
+  }
+}

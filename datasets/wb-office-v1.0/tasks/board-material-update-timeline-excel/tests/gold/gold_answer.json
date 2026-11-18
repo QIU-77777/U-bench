@@ -1,0 +1,1080 @@
+{
+  "case_id": "board_material_update_timeline_excel",
+  "co_location_expectations": [
+    {
+      "forbidden_terms": [
+        "样本口径待冻结",
+        "未形成审定口径"
+      ],
+      "group": "workbook_to_slide_mapping",
+      "id": "slide_03_sample_risk_rows",
+      "object_name": "总览_事项表_旧稿",
+      "required_terms": [
+        "抽样复核包冻结",
+        "7月4日",
+        "先于采购审定",
+        "风险降级条件",
+        "7月12日前"
+      ],
+      "slide": 3
+    },
+    {
+      "forbidden_terms": [
+        "抽样复核包冻结后再审定"
+      ],
+      "group": "workbook_to_slide_mapping",
+      "id": "slide_06_sample_purchase_precondition",
+      "object_name": "工作流B_服务包卡",
+      "required_terms": [
+        "采购口径",
+        "7月5日前",
+        "M-407",
+        "样本冻结"
+      ],
+      "slide": 6
+    },
+    {
+      "forbidden_terms": [
+        "冻结口径待定"
+      ],
+      "group": "workbook_to_slide_mapping",
+      "id": "slide_06_sample_row_precondition",
+      "object_name": "工作流B_旧稿表",
+      "required_terms": [
+        "抽样复核",
+        "冻结口径已确认",
+        "先于采购审定",
+        "M-407"
+      ],
+      "slide": 6
+    },
+    {
+      "forbidden_terms": [
+        "是否影响采购包审定",
+        "冻结口径待定"
+      ],
+      "group": "workbook_to_slide_mapping",
+      "id": "slide_07_decision_sample_precondition",
+      "object_name": "决策风险_决策表",
+      "required_terms": [
+        "复核样本冻结",
+        "7月4日",
+        "先于采购口径审定",
+        "M-407"
+      ],
+      "slide": 7
+    },
+    {
+      "forbidden_terms": [
+        "复核包冻结后通知"
+      ],
+      "group": "workbook_to_slide_mapping",
+      "id": "slide_08_resource_sample_notification",
+      "object_name": "资源沟通_节奏表",
+      "required_terms": [
+        "数据复核小组",
+        "7月4日",
+        "抽样复核包冻结",
+        "先冻结样本"
+      ],
+      "slide": 8
+    },
+    {
+      "forbidden_terms": [
+        "M-101/M-310/DEC-044"
+      ],
+      "group": "timeline_version_consistency",
+      "id": "slide_08_scope_list_updated",
+      "object_name": "资源沟通_注意框",
+      "required_terms": [
+        "M-101/M-310/M-407/DEC-044/RISK-118"
+      ],
+      "slide": 8
+    }
+  ],
+  "deck_structure": {
+    "slides": [
+      {
+        "graphic_frame_count": 0,
+        "object_count": 7,
+        "object_names": [
+          "封面_标题占位",
+          "封面_副标题占位",
+          "版本提示卡",
+          "本地材料提示",
+          "封面_圆点装饰",
+          "封面_圆点装饰_2",
+          "页脚_版本口径_1"
+        ],
+        "shape_count": 7,
+        "slide_number": 1,
+        "table_shapes": [],
+        "title": "春晖公益协同计划｜季度治理会材料"
+      },
+      {
+        "graphic_frame_count": 0,
+        "object_count": 5,
+        "object_names": [
+          "目录_标题",
+          "目录_列表",
+          "目录_同步提醒",
+          "目录_范围说明",
+          "页脚_版本口径_2"
+        ],
+        "shape_count": 5,
+        "slide_number": 2,
+        "table_shapes": [],
+        "title": "会议材料目录"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 8,
+        "object_names": [
+          "总览_标题",
+          "总览_状态芯片",
+          "总览_关键节点",
+          "总览_数据回收",
+          "总览_决策项",
+          "总览_事项表_旧稿",
+          "总览_备注框",
+          "页脚_版本口径_3"
+        ],
+        "shape_count": 7,
+        "slide_number": 3,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "总览_事项表_旧稿",
+            "row_count": 7
+          }
+        ],
+        "title": "一页总览｜v1.8 当前治理包工作状态"
+      },
+      {
+        "graphic_frame_count": 0,
+        "object_count": 15,
+        "object_names": [
+          "时间线_标题",
+          "时间线_横轴",
+          "TL-合作点确认_节点",
+          "TL-合作点确认_标签",
+          "TL-数据口径_节点",
+          "TL-数据口径_标签",
+          "TL-培训_节点",
+          "TL-培训_标签",
+          "TL-回访_节点",
+          "TL-回访_标签",
+          "TL-复盘_节点",
+          "TL-复盘_标签",
+          "时间线_口径提醒",
+          "时间线_非全局替换提醒",
+          "页脚_版本口径_4"
+        ],
+        "shape_count": 15,
+        "slide_number": 4,
+        "table_shapes": [],
+        "title": "实施时间线｜Q2-Q3 关键节点"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 6,
+        "object_names": [
+          "工作流A_标题",
+          "工作流A_晨光卡",
+          "工作流A_培训卡",
+          "工作流A_易混卡",
+          "工作流A_行动清单",
+          "页脚_版本口径_5"
+        ],
+        "shape_count": 5,
+        "slide_number": 5,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "工作流A_行动清单",
+            "row_count": 4
+          }
+        ],
+        "title": "工作流 A｜社区站点与志愿者协同"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 6,
+        "object_names": [
+          "工作流B_标题",
+          "工作流B_数据卡",
+          "工作流B_服务包卡",
+          "工作流B_仅监控卡",
+          "工作流B_旧稿表",
+          "页脚_版本口径_6"
+        ],
+        "shape_count": 5,
+        "slide_number": 6,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "工作流B_旧稿表",
+            "row_count": 5
+          }
+        ],
+        "title": "工作流 B｜数据回收与服务包准备"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 5,
+        "object_names": [
+          "决策风险_标题",
+          "决策风险_决策表",
+          "决策风险_口径提醒",
+          "决策风险_保留提醒",
+          "页脚_版本口径_7"
+        ],
+        "shape_count": 4,
+        "slide_number": 7,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "决策风险_决策表",
+            "row_count": 5
+          }
+        ],
+        "title": "治理会决策与风险提示"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 4,
+        "object_names": [
+          "资源沟通_标题",
+          "资源沟通_节奏表",
+          "资源沟通_注意框",
+          "页脚_版本口径_8"
+        ],
+        "shape_count": 3,
+        "slide_number": 8,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "资源沟通_节奏表",
+            "row_count": 6
+          }
+        ],
+        "title": "资源与沟通节奏"
+      },
+      {
+        "graphic_frame_count": 0,
+        "object_count": 6,
+        "object_names": [
+          "附录口径_标题",
+          "附录口径_版号",
+          "附录口径_日期",
+          "附录口径_模板",
+          "附录口径_说明",
+          "页脚_版本口径_9"
+        ],
+        "shape_count": 6,
+        "slide_number": 9,
+        "table_shapes": [],
+        "title": "附录｜字段口径与页脚说明"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 4,
+        "object_names": [
+          "历史归档_标题",
+          "历史归档_提示",
+          "历史归档_表",
+          "页脚_版本口径_10"
+        ],
+        "shape_count": 3,
+        "slide_number": 10,
+        "table_shapes": [
+          {
+            "col_count": 4,
+            "name": "历史归档_表",
+            "row_count": 4
+          }
+        ],
+        "title": "历史归档｜2025 秋季协作回顾（保留）"
+      },
+      {
+        "graphic_frame_count": 1,
+        "object_count": 6,
+        "object_names": [
+          "模板页_标题",
+          "模板页_占位卡1",
+          "模板页_占位卡2",
+          "模板页_占位卡3",
+          "模板页_样例表",
+          "页脚_版本口径_11"
+        ],
+        "shape_count": 5,
+        "slide_number": 11,
+        "table_shapes": [
+          {
+            "col_count": 3,
+            "name": "模板页_样例表",
+            "row_count": 3
+          }
+        ],
+        "title": "模板页｜卡片与表格样例（不作为正文）"
+      }
+    ]
+  },
+  "derivation_boundary": "Hidden expected state is derived only from approved public case-local PPTX/XLSX/environment inputs after P6 gate G-P6-002. No raw trace text, private paths, private URLs, private emails, account IDs, credentials, customer data, proprietary code, live services, or unpublished private assets are used.",
+  "deterministic_only": false,
+  "distractor_contract": {
+    "history_page_preserve_slide": 10,
+    "monitoring_card_slide": 6,
+    "must_not_promote_terms": [
+      "试点二期扩展 8月中旬",
+      "v1.9 draft",
+      "短期回访观察 7月下旬",
+      "仅监控，暂不写入正文",
+      "抽样复核观察 7月下旬",
+      "北岸书屋合作点确认 6月30日"
+    ],
+    "required_non_update_terms": [
+      "历史归档页保留原文",
+      "只用于会后跟踪",
+      "不替换正文状态或时间线",
+      "不进入本次正文",
+      "保持模板用途"
+    ],
+    "template_page_preserve_slide": 11
+  },
+  "generated_at": "2026-06-28T03:45:00Z",
+  "judge_planned": true,
+  "one_to_many_sync": [
+    {
+      "item_id": "M-101",
+      "required_terms": [
+        "晨光社区服务站签约",
+        "6月30日",
+        "已完成"
+      ],
+      "slides": [
+        3,
+        4,
+        5,
+        8
+      ]
+    },
+    {
+      "item_id": "M-205",
+      "required_terms": [
+        "数据回收口径",
+        "7月3日",
+        "抽样复核"
+      ],
+      "slides": [
+        3,
+        4,
+        6
+      ]
+    },
+    {
+      "item_id": "M-407",
+      "required_terms": [
+        "抽样复核包冻结",
+        "7月4日",
+        "先于采购"
+      ],
+      "slides": [
+        3,
+        4,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "item_id": "M-310",
+      "required_terms": [
+        "志愿者培训启动",
+        "7月15日",
+        "启动"
+      ],
+      "slides": [
+        3,
+        4,
+        5,
+        8
+      ]
+    },
+    {
+      "item_id": "M-206",
+      "required_terms": [
+        "成本测算",
+        "黄色关注",
+        "8月第一周"
+      ],
+      "slides": [
+        3,
+        4,
+        6,
+        7
+      ]
+    },
+    {
+      "item_id": "DEC-044",
+      "required_terms": [
+        "采购口径",
+        "待治理会确认",
+        "7月5日前"
+      ],
+      "slides": [
+        3,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "item_id": "RISK-118",
+      "required_terms": [
+        "风险降级条件",
+        "7月12日前",
+        "8月第一周"
+      ],
+      "slides": [
+        3,
+        7,
+        8
+      ]
+    }
+  ],
+  "oracle_output": {
+    "bytes": 29524,
+    "path": "gold/oracle_output.pptx",
+    "sha256": "769da22e7f54d74f1d3143080edef35d3f40488b2606f3a1749918001aa3c67a"
+  },
+  "output_contract": {
+    "allow_judge": true,
+    "allow_vlm_judge": false,
+    "allowed_evaluation_basis": [
+      "slide_text",
+      "section_structure",
+      "timeline_labels",
+      "table_data_mapping",
+      "file_integrity",
+      "text_only_judge_evidence"
+    ],
+    "expected_filename": "quarterly_governance_board_deck_revised.pptx",
+    "expected_format": "pptx",
+    "expected_language": "zh-CN",
+    "expected_output_rel": "output/quarterly_governance_board_deck_revised.pptx",
+    "expected_slide_count": 11,
+    "footer_material_date": "2026-07-01",
+    "footer_version": "v1.8 当前",
+    "prohibited_core_requirements": [
+      "image_understanding",
+      "video_understanding",
+      "audio_understanding",
+      "OCR",
+      "VLM_judge",
+      "pixel_level_visual_scoring"
+    ]
+  },
+  "public_inputs": [
+    {
+      "bytes": 29538,
+      "path": "input/quarterly_governance_board_deck.pptx",
+      "role": "base PPTX deck",
+      "sha256": "8defe37524d71352c3fc40ad1212dcf4599c833ff7bd1595d546d91c1c774d91"
+    },
+    {
+      "bytes": 23668,
+      "path": "input/program_milestone_update_register.xlsx",
+      "role": "source workbook",
+      "sha256": "28c44ac0d059fd3c194bd7537a13ab655794ba9a16c675503c57385085826fda"
+    },
+    {
+      "bytes": 842,
+      "path": "environment/local_fixture_notes.txt",
+      "role": "local environment note",
+      "sha256": "3a904fcafb0594a1ebefa66747fa87cff359859f3c0eeb1b4c27ab992ab04c9e"
+    }
+  ],
+  "required_slide_expectations": {
+    "1": {
+      "all": [
+        "当前治理包口径：v1.8 当前",
+        "资料口径：2026-07-01"
+      ],
+      "none": [
+        "v1.7 草稿",
+        "2026-06-12"
+      ]
+    },
+    "10": {
+      "all": [
+        "历史归档｜2025 秋季协作回顾（保留）",
+        "北岸书屋合作点确认",
+        "已归档",
+        "2025-06-20",
+        "服务包数据回收",
+        "已复盘",
+        "2025-07-11",
+        "志愿者培训",
+        "完成",
+        "2025-08-02"
+      ],
+      "none": [
+        "6月30日已完成",
+        "7月3日抽样复核",
+        "7月4日已确认",
+        "7月15日已锁定",
+        "7月12日前",
+        "黄色关注，保留专项跟踪",
+        "M-407",
+        "RISK-118"
+      ]
+    },
+    "11": {
+      "all": [
+        "模板页｜卡片与表格样例（不作为正文）",
+        "样例卡片标题",
+        "样例状态芯片",
+        "样例行动项",
+        "占位文本",
+        "不参与本次更新"
+      ],
+      "none": [
+        "M-101",
+        "M-205",
+        "M-407",
+        "M-310",
+        "DEC-044",
+        "RISK-118",
+        "6月30日已完成",
+        "7月3日抽样复核",
+        "7月4日已确认",
+        "7月15日已锁定"
+      ]
+    },
+    "2": {
+      "all": [
+        "已按登记簿同步",
+        "v1.8",
+        "2026-07-01",
+        "历史归档",
+        "模板样例",
+        "仅监控事项",
+        "后续版本草稿"
+      ],
+      "none": [
+        "6 月中旬工作稿"
+      ]
+    },
+    "3": {
+      "all": [
+        "v1.8 当前治理包",
+        "服务站签约：6月30日已完成",
+        "7月3日进入抽样复核",
+        "采购口径7月5日前确认",
+        "晨光社区服务站签约",
+        "已完成，进入会后回访准备",
+        "抽样复核包冻结",
+        "冻结口径已确认，先于采购审定",
+        "7月4日",
+        "志愿者培训启动",
+        "7月15日",
+        "风险降级条件",
+        "7月12日前提交降级证据",
+        "8月第一周复盘",
+        "黄色关注，保留专项跟踪",
+        "8月第一周"
+      ],
+      "none": [
+        "待签署",
+        "草案待抽样",
+        "样本口径待冻结",
+        "待排期",
+        "未形成审定口径",
+        "橙色风险",
+        "8月待定",
+        "7/12前"
+      ]
+    },
+    "4": {
+      "all": [
+        "服务站签约",
+        "6月30日已完成",
+        "数据回收口径",
+        "7月3日抽样复核",
+        "抽样复核包冻结",
+        "7月4日先于采购",
+        "培训启动",
+        "7月15日已锁定",
+        "风险复盘",
+        "8月第一周黄色关注"
+      ],
+      "none": [
+        "6/20 待确认",
+        "6/26 草案",
+        "7/04",
+        "7月上旬待排期",
+        "8月待定"
+      ]
+    },
+    "5": {
+      "all": [
+        "晨光社区服务站签约 / 合作点确认",
+        "当前状态：已完成，进入会后回访准备",
+        "日期：6月30日",
+        "志愿者培训启动",
+        "当前状态：启动日已锁定",
+        "启动日：7月15日",
+        "北岸书屋协作记录",
+        "历史归档页保留原文",
+        "不并入当前晨光服务站签约"
+      ],
+      "none": [
+        "旧稿状态：待签署",
+        "旧稿状态：待排期",
+        "旧稿日期：6/20",
+        "旧稿日期：7月上旬"
+      ]
+    },
+    "6": {
+      "all": [
+        "当前：已完成初筛，进入抽样复核",
+        "日期：7月3日",
+        "当前：待治理会确认",
+        "决策期限：7月5日前",
+        "依赖 M-407 样本冻结",
+        "抽样复核",
+        "冻结口径已确认，先于采购审定",
+        "M-407 是采购审定前置条件",
+        "黄色关注，保留专项跟踪",
+        "只用于会后跟踪",
+        "不替换正文状态或时间线"
+      ],
+      "none": [
+        "旧稿：草案待抽样",
+        "冻结口径待定",
+        "橙色风险"
+      ]
+    },
+    "7": {
+      "all": [
+        "待治理会确认",
+        "7月5日前审定采购口径",
+        "依赖 M-407",
+        "复核样本冻结",
+        "7月4日确认抽样复核包",
+        "先于采购口径审定",
+        "培训启动日为7月15日",
+        "黄色关注，保留专项跟踪",
+        "8月第一周复盘风险窗口",
+        "7月12日前提交降级证据",
+        "试点二期扩展",
+        "不进入本次正文"
+      ],
+      "none": [
+        "是否按旧成本测算推进",
+        "冻结口径待定",
+        "是否影响采购包审定",
+        "7/20 首轮回访",
+        "橙色风险"
+      ]
+    },
+    "8": {
+      "all": [
+        "签约完成后 3 个工作日",
+        "晨光社区服务站签约",
+        "数据复核小组",
+        "7月4日确认后通知",
+        "抽样复核包冻结",
+        "先冻结样本再提采购口径",
+        "7月15日前一周",
+        "志愿者培训启动",
+        "7月5日前确认",
+        "采购口径",
+        "M-101/M-310/M-407/DEC-044/RISK-118",
+        "归档页文本不重写",
+        "风险降级条件",
+        "7月12日前",
+        "8月第一周复盘"
+      ],
+      "none": [
+        "签约后 3 个工作日",
+        "复核包冻结后通知",
+        "培训排期",
+        "会前确认"
+      ]
+    },
+    "9": {
+      "all": [
+        "当前页脚：v1.8 当前",
+        "资料口径：2026-07-01",
+        "已按登记簿资料口径日期同步",
+        "不要把 workbook 原表整页复制到 PPT"
+      ],
+      "none": [
+        "旧稿页脚：v1.7 草稿",
+        "旧稿资料口径：2026-06-12"
+      ]
+    }
+  },
+  "safety_contract": {
+    "forbidden_dependency_claims": [
+      "live service",
+      "external API",
+      "browser",
+      "private URL",
+      "account backend",
+      "VPN"
+    ],
+    "forbidden_leakage_markers": [
+      "source_locator",
+      "private_source_access",
+      "request_id",
+      "conversation_id",
+      "row_group",
+      "row_in_group",
+      "wbi-opus461m",
+      "parquet"
+    ],
+    "forbidden_output_suffixes": [
+      ".pdf",
+      ".md",
+      ".markdown",
+      ".docx",
+      ".xlsx",
+      ".html",
+      ".htm",
+      ".png",
+      ".jpg",
+      ".jpeg"
+    ]
+  },
+  "triggered_by_revision": "P8-hardening-judge-revision-20260628",
+  "workbook_expected": {
+    "alias_rows": [
+      {
+        "别名组": "AL-GUANG-01",
+        "备注": "旧稿常用简称，需要按事项编号和工作流确认",
+        "易混淆项": "北岸书屋合作点确认",
+        "材料中可能写法": "晨光中心；晨光社区站；合作点确认",
+        "正式写法": "晨光社区服务站签约",
+        "适用范围": "当前治理包 M-101"
+      },
+      {
+        "别名组": "AL-DATA-02",
+        "备注": "同词在历史页出现时不更新",
+        "易混淆项": "2025 年数据回收归档",
+        "材料中可能写法": "问卷回收；数据采集口径；服务包数据",
+        "正式写法": "服务包数据回收口径",
+        "适用范围": "当前治理包 M-205"
+      },
+      {
+        "别名组": "AL-TRAIN-03",
+        "备注": "看页面类型和事项编号",
+        "易混淆项": "模板页培训占位",
+        "材料中可能写法": "志愿者培训；组长通知；培训启动",
+        "正式写法": "志愿者培训启动",
+        "适用范围": "当前治理包 M-310"
+      },
+      {
+        "别名组": "AL-RISK-04",
+        "备注": "风险等级与采购决策不是同一字段",
+        "易混淆项": "仅监控观察项",
+        "材料中可能写法": "成本测算；预算压力；采购口径风险",
+        "正式写法": "成本测算与风险口径",
+        "适用范围": "当前治理包 M-206/DEC-044"
+      },
+      {
+        "别名组": "AL-SAMPLE-05",
+        "备注": "样本冻结是采购审定前置条件，不等于采购已完成",
+        "易混淆项": "仅监控抽样观察",
+        "材料中可能写法": "复核样本包；样本冻结；抽样包",
+        "正式写法": "抽样复核包冻结",
+        "适用范围": "当前治理包 M-407"
+      },
+      {
+        "别名组": "AL-DOWNGRADE-06",
+        "备注": "降级条件只说明证据提交期限，不表示黄色关注已解除",
+        "易混淆项": "后续风险观察",
+        "材料中可能写法": "降级条件；专项跟踪条件；复盘门槛",
+        "正式写法": "风险降级条件",
+        "适用范围": "当前治理包 RISK-118"
+      }
+    ],
+    "current_records": [
+      {
+        "aliases": [
+          "晨光中心签约",
+          "合作点确认"
+        ],
+        "current_status": "已完成，进入会后回访准备",
+        "date_display": "6月30日",
+        "item_id": "M-101",
+        "item_name": "晨光社区服务站签约",
+        "note": "旧稿中仍写待签署，需与时间线和总览保持一致",
+        "raw_date": "2026/06/30",
+        "record_no": "CHG-0601",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "总览",
+          "时间线",
+          "工作流A"
+        ],
+        "version_raw": "v1.8 当前",
+        "workstream": "站点拓展"
+      },
+      {
+        "aliases": [
+          "数据采集口径",
+          "问卷回收"
+        ],
+        "current_status": "已完成初筛，进入抽样复核",
+        "date_display": "7月3日",
+        "item_id": "M-205",
+        "item_name": "服务包数据回收口径",
+        "note": "不要把‘草案待抽样’保留为当前状态",
+        "raw_date": "7月第1周五",
+        "record_no": "CHG-0602",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "总览",
+          "时间线",
+          "工作流B"
+        ],
+        "version_raw": "v1.8-current",
+        "workstream": "数据治理"
+      },
+      {
+        "aliases": [
+          "培训排期",
+          "志愿者组长通知"
+        ],
+        "current_status": "启动日已锁定",
+        "date_display": "7月15日",
+        "item_id": "M-310",
+        "item_name": "志愿者培训启动",
+        "note": "与回访节奏联动，但无需新增一页",
+        "raw_date": "7/15",
+        "record_no": "CHG-0603",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "时间线",
+          "工作流A",
+          "资源沟通"
+        ],
+        "version_raw": "1.8 当前",
+        "workstream": "能力建设"
+      },
+      {
+        "aliases": [
+          "成本测算",
+          "预算压力"
+        ],
+        "current_status": "黄色关注，保留专项跟踪",
+        "date_display": "8月第一周",
+        "item_id": "M-206",
+        "item_name": "成本测算与风险口径",
+        "note": "旧稿橙色风险不再作为当前表述",
+        "raw_date": "2026年8月第1周",
+        "record_no": "CHG-0604",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "总览",
+          "工作流B",
+          "决策风险"
+        ],
+        "version_raw": "V1.8 当前",
+        "workstream": "财务协同"
+      },
+      {
+        "aliases": [
+          "服务包采购",
+          "采购口径"
+        ],
+        "current_status": "待治理会确认",
+        "date_display": "7月5日前",
+        "item_id": "DEC-044",
+        "item_name": "服务包采购口径审定",
+        "note": "仍为决策项，不应写成已完成",
+        "raw_date": "2026-07-05",
+        "record_no": "CHG-0605",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "决策风险",
+          "资源沟通"
+        ],
+        "version_raw": "v1.8 当前",
+        "workstream": "治理决策"
+      },
+      {
+        "aliases": [
+          "复核样本包",
+          "样本冻结",
+          "抽样包"
+        ],
+        "current_status": "冻结口径已确认，先于采购审定",
+        "date_display": "7月4日",
+        "item_id": "M-407",
+        "item_name": "抽样复核包冻结",
+        "note": "采购口径审定依赖该冻结口径，不能写成仅监控或后续草稿",
+        "raw_date": "2026-07-04",
+        "record_no": "CHG-0606",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "工作流B",
+          "决策风险",
+          "资源沟通"
+        ],
+        "version_raw": "v1.8 当前",
+        "workstream": "数据治理"
+      },
+      {
+        "aliases": [
+          "降级条件",
+          "专项跟踪条件",
+          "复盘门槛"
+        ],
+        "current_status": "7月12日前提交降级证据，8月第一周复盘",
+        "date_display": "7月12日前",
+        "item_id": "RISK-118",
+        "item_name": "风险降级条件",
+        "note": "与 M-206 的黄色关注联动，不能写成风险已解除",
+        "raw_date": "2026-07-12",
+        "record_no": "CHG-0607",
+        "scope": "本次治理会材料",
+        "target_pages": [
+          "总览",
+          "决策风险",
+          "资源沟通"
+        ],
+        "version_raw": "v1.8 当前",
+        "workstream": "风险治理"
+      }
+    ],
+    "current_scope_value": "本次治理会材料",
+    "current_version_display": "v1.8 当前",
+    "excluded_records": [
+      {
+        "aliases": [
+          "合作点扩展",
+          "二期站点"
+        ],
+        "current_status": "后续版本草稿",
+        "date_display": "8月中旬",
+        "item_id": "M-112",
+        "item_name": "试点二期扩展",
+        "note": "可在会后备忘中保留，但不覆盖当前 M-101",
+        "raw_date": "2026-08-18",
+        "record_no": "CHG-0608",
+        "scope": "后续版本草稿",
+        "target_pages": [
+          "不进入本次治理会正文"
+        ],
+        "version_raw": "v1.9 draft",
+        "workstream": "后续版本"
+      },
+      {
+        "aliases": [
+          "北岸书屋",
+          "站点确认"
+        ],
+        "current_status": "已归档",
+        "date_display": "2025年6月20日",
+        "item_id": "ARCH-2025",
+        "item_name": "北岸书屋合作点确认",
+        "note": "同名近似事项，仅用于区分，不替换当前页",
+        "raw_date": "2025-06-20",
+        "record_no": "CHG-0609",
+        "scope": "归档页保留",
+        "target_pages": [
+          "历史归档"
+        ],
+        "version_raw": "历史归档",
+        "workstream": "历史归档"
+      },
+      {
+        "aliases": [
+          "观察项",
+          "会后跟踪"
+        ],
+        "current_status": "仅监控，暂不写入正文",
+        "date_display": "7月下旬",
+        "item_id": "MON-014",
+        "item_name": "短期回访观察",
+        "note": "可解释风险，但不作为完成状态",
+        "raw_date": "2026-07-22",
+        "record_no": "CHG-0610",
+        "scope": "仅监控",
+        "target_pages": [
+          "不进入正文替换"
+        ],
+        "version_raw": "v1.8 观察",
+        "workstream": "监控观察"
+      }
+    ],
+    "material_date": "2026-07-01",
+    "out_of_scope_rows": [
+      {
+        "为何暂不纳入": "旧年度归档",
+        "出现位置": "历史归档页",
+        "名称": "北岸书屋合作点确认",
+        "容易误用的原因": "名称接近 M-101",
+        "建议处理": "保留历史页原文",
+        "记录号": "HIS-2025-01"
+      },
+      {
+        "为何暂不纳入": "v1.9 draft 未生效",
+        "出现位置": "后续版本草稿",
+        "名称": "试点二期扩展",
+        "容易误用的原因": "看起来像当前合作点扩展",
+        "建议处理": "不写入本次正文",
+        "记录号": "FUT-1901"
+      },
+      {
+        "为何暂不纳入": "观察项未形成治理会决策",
+        "出现位置": "仅监控清单",
+        "名称": "短期回访观察",
+        "容易误用的原因": "可能被误写成风险结论",
+        "建议处理": "可作为背景但不替换状态",
+        "记录号": "MON-014"
+      },
+      {
+        "为何暂不纳入": "未形成冻结口径",
+        "出现位置": "仅监控清单",
+        "名称": "抽样复核观察",
+        "容易误用的原因": "容易与 M-407 混淆",
+        "建议处理": "不替换当前样本冻结口径",
+        "记录号": "MON-SAMPLE"
+      },
+      {
+        "为何暂不纳入": "占位说明，不是业务事实",
+        "出现位置": "模板页",
+        "名称": "模板页样例行动项",
+        "容易误用的原因": "含有‘培训’和‘状态’字样",
+        "建议处理": "保留模板页用途",
+        "记录号": "TPL-ROW"
+      }
+    ],
+    "readme_fields": {
+      "使用边界": "只同步适用于本次治理会材料的记录",
+      "日期展示": "优先使用本簿给出的展示建议；保留中文会议材料风格",
+      "本次材料包": "2026 Q2 治理会包，当前有效口径为 v1.8",
+      "材料用途": "供治理会 PPT 工作稿同步状态、日期、版号和少量决策文本",
+      "版号脚注": "若 PPTX 页脚仍为 v1.7 草稿，应改为当前治理包口径",
+      "资料口径日期": "2026-07-01（页脚“资料口径”使用）"
+    },
+    "version_normalization": {
+      "1.8 当前": "v1.8 当前",
+      "2026-07-04": "7月4日",
+      "2026-07-12": "7月12日前",
+      "2026/06/30": "6月30日",
+      "2026年8月第1周": "8月第一周",
+      "7/15": "7月15日",
+      "7月第1周五": "7月3日",
+      "v1.8 当前": "v1.8 当前",
+      "v1.8-current": "v1.8 当前",
+      "v1.9 draft": "不用于正文替换",
+      "资料口径日期": "2026-07-01"
+    }
+  }
+}

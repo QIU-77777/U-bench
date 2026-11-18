@@ -1,0 +1,65 @@
+evidence_manifest:
+  case_slug: board_material_update_timeline_excel
+  revision_record_id: P8-hardening-judge-revision-20260628
+  status: needs_p6_p7_review_and_p8_smoke_rerun_before_release_use
+  purpose: >-
+    Supplemental text-only WB Judge evidence contract for artifact-level semantic
+    assessment of a revised governance-board PPTX generated from the approved
+    public PPTX/XLSX workspace. Judge complements deterministic checks for
+    narrative integration, executive prioritization, concise governance writing,
+    non-mechanical patch quality, and risk/decision framing consistency.
+  authoring_config_path: judge/judge.yaml
+  runtime_config_path_required: tests/judge.yaml
+  public_surface_version:
+    p6_reopen_required: true
+    public_inputs:
+      - input/quarterly_governance_board_deck.pptx
+      - input/program_milestone_update_register.xlsx
+      - environment/local_fixture_notes.txt
+    public_output:
+      - output/quarterly_governance_board_deck_revised.pptx
+  activation_condition:
+    - Deterministic verifier has produced passed_count, total_count, pass_rate, gated_pass, and failed_checks.
+    - Deterministic file, source-binding, structure, exact fact, date/status, safety, and hash checks remain visible and separate.
+    - Verifier-produced judge_evidence Markdown files exist under /logs/verifier/judge_evidence and are exposed to WB Judge through a minimal verifier-local artifact_manifest.json; no workspace-level judge_evidence mirror or central extraction is required.
+    - Judge consumes only public-safe text extracted from submitted PPTX, base-vs-submitted slide text delta, public workbook summary, public base-deck summary, and deterministic gate status.
+    - Deterministic safety/leakage or output-gate failures withhold submitted-output text and block Judge activation.
+  verifier_generated_judge_evidence:
+    builder: evaluator/eval.py --verifier-logs /logs/verifier
+    workspace_judge_evidence_dir: judge_evidence
+    logs_judge_evidence_dir: /logs/verifier/judge_evidence
+    expected_files:
+      - path: judge_evidence/judge_scope_and_gate_status.md
+        max_chars: 5000
+      - path: judge_evidence/submitted_deck_slide_text.md
+        max_chars: 30000
+      - path: judge_evidence/base_vs_submitted_slide_delta.md
+        max_chars: 18000
+      - path: judge_evidence/public_workbook_update_summary.md
+        max_chars: 18000
+      - path: judge_evidence/public_base_deck_role_summary.md
+        max_chars: 12000
+  allowed_judge_scope:
+    - board-material narrative integration across overview, timeline, workstream, decision/risk, and communication slides
+    - executive prioritization of current-scope status, decision deadlines, preconditions, and risk windows
+    - concise zh-CN governance-board writing quality based on extracted slide text
+    - non-mechanical targeted editing quality without workbook dumping or global replacement behavior
+    - synthesized risk and decision framing consistency for sample freeze, procurement confirmation, training linkage, risk downgrade evidence, and monitoring/future/history boundaries
+  forbidden_judge_scope:
+    - exact workbook fact correctness, exact dates/statuses/IDs, exact phrase matching, hidden oracle wording, or source-row scoring
+    - output existence, PPTX parseability, slide count/order, OOXML package integrity, object/table dimensions, public input hashes, source workbook hashes, safety/leakage checks, or forbidden extra artifact checks
+    - visual rendering, screenshots, OCR, VLM, pixel-level similarity, image/audio/video understanding, live external services, or model process/tool trace quality
+    - private trace fidelity, private paths, private URLs, private emails, account IDs, credentials, customer data, proprietary code, unpublished assets, or raw source identifiers
+  score_merge_expected:
+    method: weighted_sum
+    rule_weight: 0.80
+    llm_weight: 0.20
+    preserve_components:
+      - deterministic_component_score
+      - deterministic_pass_rate
+      - deterministic_gated_pass
+      - failed_checks
+      - llm_judge_component_score
+      - llm_judge_status
+      - score_source_notes
+      - validity_notes

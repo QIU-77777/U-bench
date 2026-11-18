@@ -1,0 +1,419 @@
+{
+  "allowed_public_paths": [
+    "README.md",
+    "pyproject.toml",
+    "docs/quickstart.md",
+    "docs/api-client.md",
+    "docs/output-format.md",
+    "docs/config-resolution.md",
+    "docs/glossary.md",
+    "docs/migration-v1.md",
+    "src/citrinekit/__init__.py",
+    "src/citrinekit/cli.py",
+    "src/citrinekit/client.py",
+    "src/citrinekit/config.py",
+    "src/citrinekit/render.py",
+    "src/citrinekit/experimental.py",
+    "config/defaults.yaml",
+    "config/profiles.example.yaml",
+    "schemas/scan-result.schema.json",
+    "schemas/profile.schema.json",
+    "examples/cli/scan_minimal.sh",
+    "examples/cli/scan_with_profile.sh",
+    "examples/python/use_client.py",
+    "examples/output/scan_summary.jsonl",
+    "examples/legacy/old_json_flag.txt",
+    "examples/data/sample-items.txt",
+    "tests/fixtures/minimal_job.yaml",
+    "tests/fixtures/broken_optional_fields.yaml",
+    "notes/roadmap_draft.txt"
+  ],
+  "answer_contract": {
+    "min_distinct_cited_paths": 8,
+    "min_heading_count": 4,
+    "no_output_file_expected": true,
+    "output_kind": "Chinese Markdown final answer in chat",
+    "required_topic_terms": [
+      "CLI",
+      "Python API",
+      "config",
+      "schema",
+      "examples",
+      "output",
+      "caveat"
+    ],
+    "workspace_root": "input/sample_workspace/citrinectl"
+  },
+  "case_slug": "api_usage_explain_cli_l3_001",
+  "citation_groups": {
+    "api_docs_source_examples": [
+      "docs/api-client.md",
+      "src/citrinekit/client.py",
+      "src/citrinekit/__init__.py",
+      "examples/python/use_client.py"
+    ],
+    "caveat_distractors": [
+      "docs/migration-v1.md",
+      "examples/legacy/old_json_flag.txt",
+      "src/citrinekit/experimental.py",
+      "notes/roadmap_draft.txt",
+      "docs/output-format.md"
+    ],
+    "cli_docs_source_examples": [
+      "docs/quickstart.md",
+      "src/citrinekit/cli.py",
+      "pyproject.toml",
+      "examples/cli/scan_minimal.sh",
+      "examples/cli/scan_with_profile.sh"
+    ],
+    "config_docs_config_source_schema": [
+      "docs/config-resolution.md",
+      "config/defaults.yaml",
+      "config/profiles.example.yaml",
+      "src/citrinekit/config.py",
+      "schemas/profile.schema.json"
+    ],
+    "output_docs_source_schema_example": [
+      "docs/output-format.md",
+      "src/citrinekit/render.py",
+      "schemas/scan-result.schema.json",
+      "examples/output/scan_summary.jsonl"
+    ],
+    "readme_not_only": [
+      "README.md"
+    ]
+  },
+  "derivation_boundary": "Expected facts are derived only from public artifacts under instruction.md, case.yaml, environment/public_environment_manifest.yaml, and input/sample_workspace/citrinectl. No private trace text, dispatch-only private source access, private paths, private URLs, credentials, customer data, or proprietary assets were used.",
+  "expected_facts": {
+    "api": {
+      "entry_points": [
+        "ScanClient.from_profile(profile_name)",
+        "ScanClient.scan_job(job_path, include_warnings=False)",
+        "ScanResult.to_records()",
+        "ScanResult.to_summary()"
+      ],
+      "exports": [
+        "ScanClient",
+        "ScanResult"
+      ],
+      "rendering_caveat": "scan_job does not expose format=table/jsonl/summary; choose rendering after ScanResult"
+    },
+    "caveats": {
+      "csv_export": "CSV export appears only as a future dashboard adapter note, not current output support",
+      "experimental_streaming": "stream_scan_events is experimental-only and not wired into CLI or public API docs",
+      "old_json_flag": "--json is a historical v1/pre-0.4 snippet and not registered by the current parser; use --format jsonl",
+      "old_run_command": "citrinectl run is historical; current supported command is citrinectl scan",
+      "readme_scope": "README is intentionally brief and not a complete reference",
+      "remote_profile_sync": "sync_remote_profile/remote profile sync is a roadmap placeholder and not supported"
+    },
+    "cli": {
+      "entrypoint": "project script citrinectl maps to citrinekit.cli:main",
+      "examples": [
+        "scan_minimal uses --format summary",
+        "scan_with_profile uses --profile local-dev --include-warnings"
+      ],
+      "explain_caveat": "explain does not accept --format",
+      "explain_flags": [
+        "--profile NAME"
+      ],
+      "format_fallback": "scan uses --format when supplied, otherwise resolved output.format from config",
+      "scan_flags": [
+        "--profile NAME",
+        "--format table|jsonl|summary",
+        "--include-warnings"
+      ],
+      "supported_commands": [
+        "citrinectl scan JOB_FILE",
+        "citrinectl explain JOB_FILE"
+      ]
+    },
+    "config_schema": {
+      "defaults": {
+        "include_warnings": false,
+        "output_format": "summary",
+        "profile_name": "default",
+        "retry_count": 2,
+        "timeout_seconds": 45
+      },
+      "environment_variables": [
+        "CITRINE_PROFILE_FILE",
+        "CITRINE_DEFAULT_PROFILE"
+      ],
+      "local_dev": {
+        "include_warnings": true,
+        "output_format": "jsonl",
+        "retry_count": 0,
+        "timeout_seconds": 10
+      },
+      "no_env_format_override": true,
+      "profile_schema_fields": [
+        "scan.retry_count",
+        "scan.timeout_seconds",
+        "output.format",
+        "output.include_warnings"
+      ],
+      "profile_schema_format_enum": [
+        "table",
+        "jsonl",
+        "summary"
+      ],
+      "resolution_order": [
+        "config/defaults.yaml",
+        "named profile from config/profiles.example.yaml or CITRINE_PROFILE_FILE",
+        "CLI flags exposed by parser"
+      ],
+      "timeout_caveat": "docs/config-resolution.md says scan.timeout, while defaults/profiles and schemas/profile.schema.json use timeout_seconds; answer should flag this naming ambiguity rather than invent a separate field."
+    },
+    "output_format": {
+      "conditional_fields": {
+        "metric": "metrics",
+        "summary_or_warning": "message"
+      },
+      "jsonl_record_families": [
+        "summary",
+        "metric",
+        "warning"
+      ],
+      "modes": [
+        "table",
+        "summary",
+        "jsonl"
+      ],
+      "schema_required_fields": [
+        "record_type",
+        "job_id",
+        "status"
+      ],
+      "unsupported_outputs": [
+        "XML",
+        "CSV",
+        "remote webhook events",
+        "future streaming"
+      ],
+      "warning_behavior": "warning records in jsonl are emitted only when include_warnings resolves true; summary/table may summarize or fold warning details"
+    }
+  },
+  "generated_at": "2026-06-25T00:00:00Z",
+  "negative_claims": {
+    "private_leakage_patterns": [
+      "absolute_private_filesystem_path_class",
+      "windows_absolute_path_class",
+      "source_file_name_class",
+      "source_locator_field_name_class",
+      "uuid_or_long_hex_identifier_shape",
+      "private_source_access_marker_class",
+      "credential_or_token_marker_class"
+    ],
+    "unsupported_as_supported_patterns": [
+      "supports --json",
+      "--json is supported",
+      "支持 --json",
+      "supports citrinectl run",
+      "citrinectl run is supported",
+      "支持 citrinectl run",
+      "streaming is supported",
+      "supports streaming",
+      "支持 streaming",
+      "支持 stream_scan_events",
+      "remote profile sync is supported",
+      "支持 remote profile sync",
+      "supports csv export",
+      "CSV export is supported",
+      "支持 CSV export",
+      "supports XML",
+      "支持 XML",
+      "webhook events are supported",
+      "支持 webhook"
+    ]
+  },
+  "perturb_gates": {
+    "absolute_private_path": [
+      "citation_no_private_or_absolute_paths",
+      "private_trace_markers_absent"
+    ],
+    "experimental_streaming_supported": [
+      "caveat_experimental_streaming_unsupported",
+      "negative_unsupported_claims_absent"
+    ],
+    "readme_only": [
+      "citation_min_distinct_paths",
+      "citation_not_readme_only",
+      "cross_artifact_cli_docs_source_examples",
+      "cross_artifact_api_docs_source_examples",
+      "cross_artifact_config_docs_source_schema",
+      "cross_artifact_output_docs_source_schema_example"
+    ],
+    "stale_json_current": [
+      "caveat_old_json_flag_marked_stale",
+      "caveat_old_run_command_marked_stale",
+      "negative_unsupported_claims_absent"
+    ],
+    "state_mutation": [
+      "state_workspace_file_count_unchanged",
+      "state_workspace_tree_sha256_unchanged",
+      "state_no_unexpected_files"
+    ],
+    "timeout_conflict_mishandled": [
+      "config_timeout_seconds_ambiguity_caveat"
+    ],
+    "uncited_summary": [
+      "citation_min_distinct_paths",
+      "cross_artifact_cli_docs_source_examples",
+      "cross_artifact_api_docs_source_examples",
+      "cross_artifact_config_docs_source_schema",
+      "cross_artifact_output_docs_source_schema_example"
+    ]
+  },
+  "verifier_isolation": {
+    "allowed_inputs_for_scoring": [
+      "submitted final-answer text",
+      "input/sample_workspace/citrinectl current filesystem state",
+      "hidden gold facts derived from public input files"
+    ],
+    "judge_dependency": false,
+    "private_trace_dependency": false,
+    "uses_public_inputs_only": true
+  },
+  "workspace_snapshot": {
+    "file_count": 27,
+    "files": [
+      {
+        "path": "README.md",
+        "sha256": "b58c1b2b198c315cb98bea83758a14b4f888329f10aee1d30deac9cb4193f004",
+        "size_bytes": 827
+      },
+      {
+        "path": "config/defaults.yaml",
+        "sha256": "6875be14c2d45082a99ddfd5ff166b01ba8d797f976faccdceee906ad8970a78",
+        "size_bytes": 217
+      },
+      {
+        "path": "config/profiles.example.yaml",
+        "sha256": "f75aa92fb2f77ab818810c42e6f8837b285a30e0f14e8b6f2deb22ff11b9ff1e",
+        "size_bytes": 406
+      },
+      {
+        "path": "docs/api-client.md",
+        "sha256": "f6369d98ac9cdb21b094177cd9662de1a9879221e541a3683f79160584d9ca51",
+        "size_bytes": 1009
+      },
+      {
+        "path": "docs/config-resolution.md",
+        "sha256": "0fff41c3825bf37e6b3d6da89082f601cf60f5f26efcdc682cbe2e95f31026e8",
+        "size_bytes": 982
+      },
+      {
+        "path": "docs/glossary.md",
+        "sha256": "792e9251932d4ce11aab4ac02548579e8b39e34946f99cdeff2a8abecf0c1d4d",
+        "size_bytes": 613
+      },
+      {
+        "path": "docs/migration-v1.md",
+        "sha256": "88535228e8575468ea669c38231af4d0120bfa8ba80b8a81eebbcded69dcf465",
+        "size_bytes": 604
+      },
+      {
+        "path": "docs/output-format.md",
+        "sha256": "a42d9e0f557747b33ed95efce7baaac93a4f5646e2b11f41f79d2abb2898240f",
+        "size_bytes": 1111
+      },
+      {
+        "path": "docs/quickstart.md",
+        "sha256": "0a4207cbb9a0a2c1bac4121672d7be81310548a6571c550ff9f2e1b1c0d5c33e",
+        "size_bytes": 1106
+      },
+      {
+        "path": "examples/cli/scan_minimal.sh",
+        "sha256": "96d50b6f1418cfdbdb442f390ea581406fece74e32e1831b059fa44b1781b840",
+        "size_bytes": 104
+      },
+      {
+        "path": "examples/cli/scan_with_profile.sh",
+        "sha256": "d8fda4025bd2d22c8de644d720801c69a2fb493017b30dc326e695ceaaa19d0d",
+        "size_bytes": 126
+      },
+      {
+        "path": "examples/data/sample-items.txt",
+        "sha256": "52eb59c04b3448c6c99b759a7e1a724b11241e790ddd59fb7e3229cc0c3b4017",
+        "size_bytes": 45
+      },
+      {
+        "path": "examples/legacy/old_json_flag.txt",
+        "sha256": "9f33450e7a776c8239e8f69df4f0006dd293f05e9fdf931379f90c7b4139ac31",
+        "size_bytes": 217
+      },
+      {
+        "path": "examples/output/scan_summary.jsonl",
+        "sha256": "2c22f2d965556107a3fabdd1209d3e782fe1e51b6c365afae4d5117cf576f514",
+        "size_bytes": 322
+      },
+      {
+        "path": "examples/python/use_client.py",
+        "sha256": "97e1c4af12a3d1917ec2561e4fece76f13edc5deb431a1b993d03fcec941e0c3",
+        "size_bytes": 252
+      },
+      {
+        "path": "notes/roadmap_draft.txt",
+        "sha256": "f81db085b25d11787de285fbe5e0862a0b87f8ad450037b55ea9b59bebfae501",
+        "size_bytes": 336
+      },
+      {
+        "path": "pyproject.toml",
+        "sha256": "da0335726653879902733db452a1923ea1a4f2c4f02331997178485c5b924d2c",
+        "size_bytes": 429
+      },
+      {
+        "path": "schemas/profile.schema.json",
+        "sha256": "826774aa9e2d42a49910a1e0612212cdee31d323cfab5b437872db340bcbce94",
+        "size_bytes": 957
+      },
+      {
+        "path": "schemas/scan-result.schema.json",
+        "sha256": "85324a381daf2272f3cf790b5b50ad98985402958b225576d6bfcb9e464715b9",
+        "size_bytes": 860
+      },
+      {
+        "path": "src/citrinekit/__init__.py",
+        "sha256": "2049648bcb3ccb681f50357387959c29c72f477f56c99a6ea8ff8883c9acc0a9",
+        "size_bytes": 148
+      },
+      {
+        "path": "src/citrinekit/cli.py",
+        "sha256": "b19f46cfa7e3c73e5d7d27bdd27b195953aa56456fa5cf320268367750a7cb9f",
+        "size_bytes": 2260
+      },
+      {
+        "path": "src/citrinekit/client.py",
+        "sha256": "06d8afe3d1d4e8ec447f17baf3f422f6facad89ea3654358344fe5cb262cba45",
+        "size_bytes": 1707
+      },
+      {
+        "path": "src/citrinekit/config.py",
+        "sha256": "ee8780333be0334757850468aa4c86abf4c7b82ae923db29661231da50eb79ec",
+        "size_bytes": 1335
+      },
+      {
+        "path": "src/citrinekit/experimental.py",
+        "sha256": "05638135c706abf91ca32af4a863ffe1f17a4df0f4be23d2de7119cc9666a6bc",
+        "size_bytes": 412
+      },
+      {
+        "path": "src/citrinekit/render.py",
+        "sha256": "8e0d56c694e5a0fbddd4115bc79c7dbb984b5679533fb9c78b4463331dd49084",
+        "size_bytes": 879
+      },
+      {
+        "path": "tests/fixtures/broken_optional_fields.yaml",
+        "sha256": "e8f23f9eceb831105d4a70b7dc3d77823424c2d92db73aa7f9ce0937a820864f",
+        "size_bytes": 218
+      },
+      {
+        "path": "tests/fixtures/minimal_job.yaml",
+        "sha256": "4f11696cc2e6a1ebbe3f3be7cd50daba8e1e5cbcf12e1837dc9b89d12219e1af",
+        "size_bytes": 176
+      }
+    ],
+    "tree_sha256": "2b2ecebbb23baf71f052dc5488f4373f2b144de87ab2a03ee6c1b59ee12f2ced",
+    "workspace_root": "input/sample_workspace/citrinectl"
+  }
+}

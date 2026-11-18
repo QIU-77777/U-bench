@@ -1,0 +1,277 @@
+{
+  "evidence_groups": {
+    "aggregate_summary_exclusion": [
+      "summary_rollup_statistics_2026-03-27.md"
+    ],
+    "forecast_year_normalization": [
+      "26E",
+      "FY2026",
+      "2026E",
+      "2028E"
+    ],
+    "rating_codebook_mapping": [
+      "维持买入",
+      "由审慎增持调整为增持",
+      "下调至中性",
+      "增持",
+      "中性"
+    ],
+    "target_alias_filtering": [
+      "澜星航服",
+      "澜星航空服务",
+      "LX AirSvc",
+      "海岚机场服务 distractor"
+    ],
+    "target_price_missingness": [
+      "北岭研究",
+      "飞隼市场"
+    ]
+  },
+  "metadata": {
+    "case_id": "case_analyst_forecast_extract_L3_018",
+    "forecast_count": 8,
+    "missing_count": 7,
+    "rating_count": 5,
+    "target_company": "澜星航空服务股份有限公司",
+    "target_price_count": 6
+  },
+  "sheets": {
+    "forecast_fields": [
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.84,
+        "fiscal_year": "2026",
+        "institution": "晨桥证券",
+        "net_profit_cny_mn": 842.5,
+        "report_date": "2026-03-18",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R2"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.97,
+        "fiscal_year": "2027",
+        "institution": "晨桥证券",
+        "net_profit_cny_mn": 973.0,
+        "report_date": "2026-03-18",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R3"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.82,
+        "fiscal_year": "2026",
+        "institution": "北岭研究",
+        "net_profit_cny_mn": 818.0,
+        "report_date": "2026-03-19",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R4"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.95,
+        "fiscal_year": "2027",
+        "institution": "北岭研究",
+        "net_profit_cny_mn": 951.6,
+        "report_date": "2026-03-19",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R5"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.8,
+        "fiscal_year": "2026",
+        "institution": "杉岭资本",
+        "net_profit_cny_mn": 802.4,
+        "report_date": "2026-03-21",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R6"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 0.91,
+        "fiscal_year": "2027",
+        "institution": "杉岭资本",
+        "net_profit_cny_mn": 906.3,
+        "report_date": "2026-03-21",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R7"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 1.05,
+        "fiscal_year": "2028",
+        "institution": "杉岭资本",
+        "net_profit_cny_mn": 1048.8,
+        "report_date": "2026-03-21",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R8"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "eps_cny": 1.19,
+        "fiscal_year": "2028",
+        "institution": "飞隼市场",
+        "net_profit_cny_mn": 1190.4,
+        "report_date": "2026-03-25",
+        "source_file": "forecast_tables.xlsx",
+        "source_row_or_section": "forecast_detail_export!R10"
+      }
+    ],
+    "missing_fields": [
+      {
+        "company_alias": "澜星航服",
+        "evidence": "FY2028 未在摘要段披露",
+        "institution": "晨桥证券",
+        "missing_type": "missing_forecast_year",
+        "report_date": "2026-03-18",
+        "source_file": "broker_summaries/summary_chenqiao_sec_2026-03-18.md"
+      },
+      {
+        "company_alias": "澜星航空服务",
+        "evidence": "摘要写明暂未给出目标价",
+        "institution": "北岭研究",
+        "missing_type": "missing_target_price",
+        "report_date": "2026-03-19",
+        "source_file": "broker_summaries/summary_beiling_research_2026-03-19.md"
+      },
+      {
+        "company_alias": "海岚机场服务",
+        "evidence": "报告主体为海岚机场服务，澜星航服仅为同业比较对象",
+        "institution": "东港证券",
+        "missing_type": "non_target_company",
+        "report_date": "2026-03-23",
+        "source_file": "broker_summaries/summary_donggang_sec_2026-03-23.md"
+      },
+      {
+        "company_alias": "LX AirSvc",
+        "evidence": "海外版字段摘录写明目标价未披露",
+        "institution": "飞隼市场",
+        "missing_type": "missing_target_price",
+        "report_date": "2026-03-25",
+        "source_file": "broker_summaries/summary_feisun_markets_2026-03-25.md"
+      },
+      {
+        "company_alias": "LX AirSvc",
+        "evidence": "2026E 和 2027E 数值沿用上一版资料，不在本摘要重复展示",
+        "institution": "飞隼市场",
+        "missing_type": "missing_forecast_year",
+        "report_date": "2026-03-25",
+        "source_file": "broker_summaries/summary_feisun_markets_2026-03-25.md"
+      },
+      {
+        "company_alias": "澜星航服",
+        "evidence": "forecast_tables.xlsx 第10行 2027E 归母净利润和 EPS 均为空",
+        "institution": "关口证券",
+        "missing_type": "missing_numeric_forecast",
+        "report_date": "2026-03-26",
+        "source_file": "forecast_tables.xlsx"
+      },
+      {
+        "company_alias": "多公司",
+        "evidence": "近六月覆盖统计为滚动汇总，不是单条机构报告",
+        "institution": "页面统计区",
+        "missing_type": "aggregate_summary_not_report_row",
+        "report_date": "2026-03-27",
+        "source_file": "broker_summaries/summary_rollup_statistics_2026-03-27.md"
+      }
+    ],
+    "rating_changes": [
+      {
+        "action_type": "maintain",
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "晨桥证券",
+        "report_date": "2026-03-18",
+        "source_file": "broker_summaries/summary_chenqiao_sec_2026-03-18.md",
+        "source_rating_text": "维持买入",
+        "standard_rating": "buy"
+      },
+      {
+        "action_type": "upgrade",
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "北岭研究",
+        "report_date": "2026-03-19",
+        "source_file": "broker_summaries/summary_beiling_research_2026-03-19.md",
+        "source_rating_text": "由审慎增持调整为增持",
+        "standard_rating": "outperform"
+      },
+      {
+        "action_type": "downgrade",
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "杉岭资本",
+        "report_date": "2026-03-21",
+        "source_file": "broker_summaries/summary_cedar_capital_2026-03-21.md",
+        "source_rating_text": "下调至中性",
+        "standard_rating": "neutral"
+      },
+      {
+        "action_type": "current",
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "飞隼市场",
+        "report_date": "2026-03-25",
+        "source_file": "broker_summaries/summary_feisun_markets_2026-03-25.md",
+        "source_rating_text": "增持",
+        "standard_rating": "outperform"
+      },
+      {
+        "action_type": "current",
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "关口证券",
+        "report_date": "2026-03-26",
+        "source_file": "broker_summaries/summary_guankou_sec_2026-03-26.md",
+        "source_rating_text": "中性",
+        "standard_rating": "neutral"
+      }
+    ],
+    "target_price_table": [
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "晨桥证券",
+        "report_date": "2026-03-18",
+        "source_file": "broker_summaries/summary_chenqiao_sec_2026-03-18.md",
+        "target_price_cny_per_share": 18.6,
+        "target_price_status": "present"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "北岭研究",
+        "report_date": "2026-03-19",
+        "source_file": "broker_summaries/summary_beiling_research_2026-03-19.md",
+        "target_price_cny_per_share": "",
+        "target_price_status": "missing"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "杉岭资本",
+        "report_date": "2026-03-21",
+        "source_file": "broker_summaries/summary_cedar_capital_2026-03-21.md",
+        "target_price_cny_per_share": 17.2,
+        "target_price_status": "present"
+      },
+      {
+        "canonical_company": "海岚机场服务股份有限公司",
+        "institution": "东港证券",
+        "report_date": "2026-03-23",
+        "source_file": "broker_summaries/summary_donggang_sec_2026-03-23.md",
+        "target_price_cny_per_share": 12.2,
+        "target_price_status": "not_target_company"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "飞隼市场",
+        "report_date": "2026-03-25",
+        "source_file": "broker_summaries/summary_feisun_markets_2026-03-25.md",
+        "target_price_cny_per_share": "",
+        "target_price_status": "missing"
+      },
+      {
+        "canonical_company": "澜星航空服务股份有限公司",
+        "institution": "关口证券",
+        "report_date": "2026-03-26",
+        "source_file": "broker_summaries/summary_guankou_sec_2026-03-26.md",
+        "target_price_cny_per_share": 16.8,
+        "target_price_status": "present"
+      }
+    ]
+  }
+}

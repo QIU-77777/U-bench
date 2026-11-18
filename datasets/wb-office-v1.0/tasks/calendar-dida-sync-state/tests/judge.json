@@ -1,0 +1,282 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "id": "judge_scope_and_gate_status",
+      "path": "judge_evidence/judge_scope_and_gate_status.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "submitted_sync_summary_text",
+      "path": "judge_evidence/submitted_sync_summary_text.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "submitted_task_state_semantic_summary",
+      "path": "judge_evidence/submitted_task_state_semantic_summary.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "submitted_sync_history_semantic_summary",
+      "path": "judge_evidence/submitted_sync_history_semantic_summary.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "public_sync_policy_context",
+      "path": "judge_evidence/public_sync_policy_context.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "public_noop_preservation_context",
+      "path": "judge_evidence/public_noop_preservation_context.md",
+      "required": true,
+      "type": "md"
+    },
+    {
+      "id": "public_workspace_boundary_context",
+      "path": "judge_evidence/public_workspace_boundary_context.md",
+      "required": true,
+      "type": "md"
+    }
+  ],
+  "llm_judge": {
+    "method": "rubric_binary_mean",
+    "rubric_admissibility_gate": {
+      "binary": true,
+      "evidence_visible": true,
+      "public_input_or_submitted_artifact_only": true,
+      "hidden_gold_context_forbidden": true,
+      "deterministic_failure_compensation_forbidden": true,
+      "exact_state_or_count_rescore_forbidden": true,
+      "private_or_model_log_evidence_forbidden": true,
+      "vlm_judge_forbidden": true
+    },
+    "rubrics": [
+      {
+        "id": "summary_human_audit_trail",
+        "question": "Based only on the submitted sync summary, submitted final-state semantic summaries, deterministic scope status, and public policy/boundary context, is sync_summary.md a substantive human-auditable local sync report under the required public headings, with item references and visible-policy reasons for the major action categories?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_sync_summary_text",
+          "submitted_task_state_semantic_summary",
+          "submitted_sync_history_semantic_summary",
+          "public_sync_policy_context",
+          "public_workspace_boundary_context"
+        ],
+        "pass_criteria": [
+          "The summary contains substantive content under the required public action headings rather than a blank scaffold, generic completion note, or copied checklist.",
+          "A human reviewer can trace creates, updates, inactive decisions, unchanged/no-op preservation, duplicate or excluded sources, manual/unrelated task preservation, and the local-only/no-live boundary to visible item references such as event IDs, sync keys, task IDs, or mapping IDs.",
+          "For each major action category that the model claims it handled, the summary gives a public-policy reason at the category or item level, such as stable sync_key matching, manual/null-sync_key/manual_lock exclusion, source-missing window rule, cancelled-source handling, duplicate suppression, or local mock boundary.",
+          "Plain Chinese operational wording is acceptable when it is auditable; polished prose, exact oracle phrasing, and a preferred section order beyond the public headings are not required."
+        ],
+        "fail_criteria": [
+          "The summary is empty, scaffold-like, mostly generic, or lacks enough item references for a human to audit the major action categories.",
+          "Major claimed actions are listed without visible policy reasons, so a reader cannot tell why an item was created, updated, inactivated, preserved, duplicate-suppressed, excluded, or manually preserved.",
+          "The summary collapses distinct categories, such as manual/unrelated tasks versus sync targets, duplicates versus excluded sources, inactive decisions versus unchanged/no-op preservation, in a way that misleads human review.",
+          "Required Judge evidence is missing, unsafe, unreadable, or too sparse to evaluate the summary."
+        ],
+        "scope_limits": [
+          "Do not score file existence, path correctness, Markdown parseability, exact heading presence, exact item counts, exact item IDs, exact action labels, or regex safety scans; deterministic checks own those facts.",
+          "Do not compare against hidden expected artifacts, hidden oracle wording, construction notes, private trace context, model logs, external calendars, live task systems, or final-agent replies.",
+          "Do not reward verbosity for its own sake; concise audit trails pass when item references and policy reasons are clear."
+        ]
+      },
+      {
+        "id": "summary_json_semantic_consistency_no_overclaim",
+        "question": "Are the material action and category claims in sync_summary.md semantically consistent with the model's own submitted final task_state.json and sync_history.json evidence, with no visible action/state overclaim or summary-versus-history contradiction?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_sync_summary_text",
+          "submitted_task_state_semantic_summary",
+          "submitted_sync_history_semantic_summary",
+          "public_noop_preservation_context"
+        ],
+        "pass_criteria": [
+          "Each material create, update, inactive, unchanged/no-op, duplicate-suppressed, excluded, or manual-preserved category claim is supported by the submitted final task-state and sync-history summaries at a semantic level visible from the model's own artifacts.",
+          "For items or mappings the summary names as updated, inactivated, preserved, duplicate-suppressed, or unchanged, the submitted history summary shows a compatible `state`, `last_action`, source-linkage status, and missing-current-export status rather than a different visible action family.",
+          "When the submitted final JSON/history remains mixed, stale, partial, or internally contradictory, the summary clearly qualifies that partial handling instead of presenting the category as cleanly completed.",
+          "Minor wording differences, non-material omissions, or deterministic-owned exact count/token mismatches do not fail this rubric by themselves when the human-facing action story remains faithful to the submitted state/history evidence.",
+          "Headline or category-level aggregate claims do not materially misstate the submitted state/history families, such as confusing initial mappings, active mappings, current calendar events, final tasks, and completed action counts into a misleading success total."
+        ],
+        "fail_criteria": [
+          "The summary claims clean success, completion, duplicate suppression, manual preservation, source-missing handling, update handling, or no-op preservation that is visibly contradicted by the submitted final task-state or sync-history summaries.",
+          "The summary assigns a named item or mapping to an action category that conflicts with the submitted history evidence, such as an update claim where history still shows a stale or different source action, an unchanged/no-op claim where history shows a material update action, or an inactive/source-missing claim where the submitted state remains current active handling.",
+          "The summary hides or smooths over visible mixed or contradictory submitted JSON/history evidence in a way that would mislead a human reviewer about what the submitted artifacts actually did.",
+          "The summary's headline or category totals materially overclaim completed sync work by mixing context counts with action counts in a way contradicted by the submitted state/history summaries.",
+          "Required Judge evidence is missing, unsafe, unreadable, or too sparse to compare the submitted summary with the submitted final state and history."
+        ],
+        "scope_limits": [
+          "Do not compare to hidden expected state, hidden gold, oracle output, exact expected IDs, exact counts, exact field values, exact timestamp values, exact uniqueness constraints, or deterministic check names.",
+          "Do not fail solely because a deterministic check failed; fail only when the submitted summary, task-state summary, and sync-history summary expose a material semantic contradiction or overclaim.",
+          "Do not use Judge to forgive, recover, or reinterpret failed deterministic state-transition, schema, duplicate, source-binding, summary-ref/count, safety, or leakage checks.",
+          "Judge may use deterministic scope status only as transparent context, not as a substitute for reading the submitted artifact evidence."
+        ]
+      },
+      {
+        "id": "visible_policy_edge_case_reasoning",
+        "question": "Does the submitted summary explicitly reason through the visible policy edge cases that make this local sync task non-mechanical, and does that reasoning remain coherent with the model's own submitted task-state and sync-history summaries?",
+        "artifact_refs": [
+          "submitted_sync_summary_text",
+          "submitted_task_state_semantic_summary",
+          "submitted_sync_history_semantic_summary",
+          "public_sync_policy_context",
+          "public_workspace_boundary_context"
+        ],
+        "pass_criteria": [
+          "The summary explains that stable sync_key/history matching beats title, time, or natural-language similarity when deciding whether to update or create, and the named examples it gives are not visibly contradicted by the submitted history summary.",
+          "It explains that manual tasks, null-sync_key tasks, manual_lock tasks, and unrelated local tasks are not synchronization targets merely because their title or notes look similar.",
+          {
+            "It explains source-missing handling at the policy level": "active mappings are inactivated only when the target due_time is inside the current sync window, while source-missing targets outside the current window remain active for this run."
+          },
+          "It explains that same-title different-sync_key or v1/v2 source instances are distinct, so an old stable chain is not overwritten by a similar new source instance.",
+          "It explains that repeated export/cache/backup rows sharing a sync_key are duplicate-suppressed rather than creating duplicate tasks or active mappings.",
+          "The policy reasoning is applied to the report's own named action categories rather than merely reciting the rules while the submitted task/history summaries show a conflicting category story."
+        ],
+        "fail_criteria": [
+          "The summary only lists outcomes and does not show the policy reasoning for the edge cases visible in public inputs.",
+          "It states the right policy in general terms but applies it incoherently to named creates, updates, inactivations, unchanged/no-op items, source-missing mappings, or duplicate-suppressed rows visible in the submitted artifact summaries.",
+          "It uses title/time similarity, generic source presence, or human-looking notes as if they were stable-match authority without explaining sync_key precedence.",
+          "It omits or conflates manual/null-sync_key/manual_lock preservation, source-missing window boundaries, same-title different-key distinction, unchanged/no-op preservation, or duplicate export suppression in a way that would mislead a human operator.",
+          "Required evidence is missing, unsafe, unreadable, or too sparse to evaluate visible policy-edge reasoning."
+        ],
+        "scope_limits": [
+          "Do not require exact public filenames, exact item IDs, exact counts, exact hidden expected wording, exact source-row coverage, exact timestamp accuracy, or deterministic duplicate/source-binding checks.",
+          "Do not penalize alternative concise wording if the visible policy consequences are clear and grounded in public inputs and the submitted artifacts do not contradict the claimed application.",
+          "Do not use external calendar/task knowledge, live service assumptions, private trace context, model process quality, or final-agent reply quality."
+        ]
+      },
+      {
+        "id": "no_change_preservation_reasoning",
+        "question": "Does the submitted summary honestly preserve publicly visible no-change, out-of-window, source-missing-outside-window, excluded/read-only, and other preservation-category stable sync anchors without counting them as ordinary updates, creates, inactive transitions, or unqualified completed actions?",
+        "artifact_refs": [
+          "submitted_sync_summary_text",
+          "submitted_task_state_semantic_summary",
+          "submitted_sync_history_semantic_summary",
+          "public_sync_policy_context",
+          "public_noop_preservation_context"
+        ],
+        "pass_criteria": [
+          "Public preservation anchors listed in `public_noop_preservation_context` are described as unchanged, preserved, no-op, out of this run's window, source-missing outside the window, excluded/read-only, or otherwise not requiring an ordinary sync mutation.",
+          "If the summary names a public preservation anchor's task ID, mapping ID, event ID, or sync_key, it places that anchor under an unchanged/no-op/preserved/out-of-window/excluded category rather than an update/create/inactive category unless it clearly qualifies a metadata-only observation.",
+          "For preservation anchors the summary claims are unchanged or preserved, the submitted task-state and sync-history summaries do not show an unqualified material update action, create action, inactive transition, or event/source metadata churn that contradicts the preservation story.",
+          "If submitted history or task-state summaries show a changed `last_action`, `event_id_last_seen`, source event ID, source timestamp, or other visible source/history metadata refresh for a preserved chain, the summary distinguishes that metadata/history refresh from a full no-op or completed business sync update.",
+          "Concise wording is acceptable; the report need not reproduce exact field values, exact timestamps, exact counts, enum spellings, or oracle phrasing."
+        ],
+        "fail_criteria": [
+          "The summary counts or describes a public preservation anchor as an update, create, inactive transition, or other completed mutation when the public context shows it should be unchanged, out-of-window, source-missing-outside-window, excluded/read-only, or otherwise preserved.",
+          "The summary omits preservation treatment entirely while claiming all stable matches or visible source rows were updated or completed, misleading a human reviewer about public unchanged or out-of-scope anchors.",
+          "The submitted task/history summaries show a named preservation anchor with unqualified material update/create/inactive action or visible history/source metadata churn, such as changed `last_action`, `event_id_last_seen`, source event ID, or source timestamp, while the summary presents the same anchor as simply unchanged/preserved without acknowledging the refresh.",
+          "The report uses broad phrases such as \"all existing mappings updated\" or \"all stable matches completed\" in a way that includes public preservation anchors and is contradicted by public preservation context.",
+          "Required evidence is missing, unsafe, unreadable, or too sparse to evaluate visible preservation-category honesty."
+        ],
+        "scope_limits": [
+          "Do not compare to hidden expected state, hidden gold, oracle output, exact expected IDs, exact counts, exact field values, exact timestamp values, exact enum spellings, or deterministic check names.",
+          "Do not fail merely because exact no-op or preservation deterministic checks failed; fail only when public preservation-anchor evidence and submitted artifacts make the human-facing preservation/update overclaim visible.",
+          "Deterministic checks remain authoritative for exact field preservation, timestamp churn, exact summary refs/counts, source binding, inactive reason enums, and state-diff correctness."
+        ]
+      },
+      {
+        "id": "local_only_boundary_statement_consistency",
+        "question": "Do the final submitted artifacts, especially sync_summary.md, consistently state or clearly imply that the work was limited to local mock JSON/Markdown state, without a contradictory real-service, browser, network, account, API, or side-effect claim?",
+        "artifact_refs": [
+          "judge_scope_and_gate_status",
+          "submitted_sync_summary_text",
+          "submitted_task_state_semantic_summary",
+          "submitted_sync_history_semantic_summary",
+          "public_workspace_boundary_context"
+        ],
+        "pass_criteria": [
+          {
+            "The summary and submitted-state evidence are consistent with a local mock workspace": "only local JSON/Markdown state is described as updated."
+          },
+          "Any mention of calendars, tasks, reminders, APIs, services, browsers, providers, accounts, or networks is clearly framed as local mock/source-data context or as not used.",
+          "The boundary statement does not contradict submitted artifact contents by claiming real external synchronization, live account access, browser automation, real notifications, network calls, or service-side updates.",
+          "A concise negative boundary statement is enough; exact phrase matching or polished compliance language is not required."
+        ],
+        "fail_criteria": [
+          "The artifacts claim, imply, or leave an unresolved contradiction that real calendar/task/reminder services, browsers, network URLs, APIs, accounts, notifications, or live side effects were used.",
+          "The summary describes remote/live completion in one place while claiming local-only operation elsewhere, making the side-effect boundary unreliable for a human reviewer.",
+          "The submitted state or summary uses public workspace terms in a way that materially masks an unsupported live-service action claim.",
+          "Required evidence is missing, unsafe, unreadable, or too sparse to evaluate local-only boundary consistency."
+        ],
+        "scope_limits": [
+          "Deterministic regex scans remain authoritative for URLs, secret-like strings, private markers, and objective live-service claim patterns; Judge only assesses semantic boundary consistency visible to a human reader.",
+          "Do not fail ordinary local mock terms such as calendar_export, mock_calendar, task_state, sync_history, event_id, sync_key, API/MCP/Skill mentioned in a negative no-use statement, or public fixture context.",
+          "Do not use external services, browser behavior, model logs, private trace context, hidden gold, or final-agent replies as evidence."
+        ]
+      }
+    ]
+  },
+  "activation_policy": {
+    "deterministic_component_transparency_required": true,
+    "deterministic_partial_pass_allowed": true,
+    "deterministic_full_pass_required": false,
+    "run_when_configured_and_backend_available": true,
+    "rule_score_activation_gate": "none",
+    "required_evidence_files_must_exist": true,
+    "artifact_level_required_evidence": true,
+    "required_evidence_files": [
+      "judge_evidence/judge_scope_and_gate_status.md",
+      "judge_evidence/submitted_sync_summary_text.md",
+      "judge_evidence/submitted_task_state_semantic_summary.md",
+      "judge_evidence/submitted_sync_history_semantic_summary.md",
+      "judge_evidence/public_sync_policy_context.md",
+      "judge_evidence/public_noop_preservation_context.md",
+      "judge_evidence/public_workspace_boundary_context.md"
+    ],
+    "deterministic_failure_policy": "Preserve deterministic component score, failed_checks, objective failure details, and test_pass_rate separately. WB Judge is complementary and must never hide, forgive, reinterpret, or mark objective deterministic failures as passed.",
+    "missing_or_unready_evidence_policy": "skip_llm_judge_and_preserve_deterministic_component_score",
+    "modality": "text_only_non_multimodal",
+    "uses_vlm_judge": false,
+    "human_authorization_id": "H-P8-JUDGE-001",
+    "public_instruction": "instruction.md",
+    "approved_public_inputs": [
+      "input/workspace/README_先读我.md",
+      "input/workspace/calendar/calendar_export_2026-07-14.json",
+      "input/workspace/tasks/task_state.json",
+      "input/workspace/sync/sync_history.json",
+      "input/workspace/rules/sync_policy.md",
+      "input/workspace/notes/operator_notes.txt",
+      "input/workspace/reports/sync_summary.md",
+      "environment/local_mock_sync/README.md",
+      "environment/state_diff_manifest.json"
+    ],
+    "approved_public_outputs": [
+      "input/workspace/tasks/task_state.json",
+      "input/workspace/sync/sync_history.json",
+      "input/workspace/reports/sync_summary.md"
+    ],
+    "prohibited_evidence": [
+      "hidden gold or oracle expected-state artifacts",
+      "construction notes or private trace/source context",
+      "model logs, tool traces, or final-agent reply quality",
+      "private paths, private URLs, private emails, account IDs, tokens, credentials, customer data, proprietary code, or unpublished private assets",
+      "external web, real calendar/task/reminder service, browser, network, API, MCP, Skill, notification, or live-service evidence",
+      "screenshots, OCR, VLM, image/video/audio, rendered thumbnails, or pixel-level evidence"
+    ],
+    "note": "Supplemental text-only WB Judge may run when all required verifier-produced judge_evidence files exist and deterministic component score, failed_checks, and objective failure status are preserved separately. The rubrics target human-auditable summary semantics, submitted-summary versus submitted-JSON consistency, visible policy-edge reasoning, public no-change preservation, and local-only boundary consistency."
+  },
+  "score_merge": {
+    "method": "weighted_sum",
+    "rule_weight": 0.8,
+    "llm_weight": 0.2,
+    "pass_threshold": 0.8,
+    "llm_pass_threshold": 0.75,
+    "preserve_components": [
+      "deterministic_component_score",
+      "deterministic_pass_rate",
+      "deterministic_gated_pass",
+      "failed_checks",
+      "llm_judge_component_score",
+      "llm_judge_status",
+      "score_source_notes",
+      "validity_notes"
+    ],
+    "write_back_policy": "Follow current cb_bench WB Judge write-back semantics when wb_judge completes: reward.json may contain llm_judge, llm_judge_status, score_merge, and merged overall, while test_pass_rate remains the deterministic rule score. Merge when required judge_evidence exists and llm_judge is non-null; deterministic full pass is not required. Never use Judge scoring to compensate deterministic factual, schema, state-transition, duplicate, source-binding, summary-ref/count, safety, parsing, or output-contract failures."
+  }
+}

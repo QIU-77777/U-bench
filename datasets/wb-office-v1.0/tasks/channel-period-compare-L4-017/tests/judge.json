@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "artifacts": [
+    {
+      "id": "comparison_workbook",
+      "path": "output/result.xlsx",
+      "required": true,
+      "type": "xlsx"
+    }
+  ],
+  "llm_judge": {
+    "method": "rubric_binary_mean",
+    "rubrics": [
+      {
+        "id": "cleaning_and_comparison_context_visible",
+        "question": "Are comparison populations and any excluded or dirty rows visibly scoped before metrics are interpreted?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Rows, sheet names, or notes identify the compared periods, metric family, and included channel population.",
+          "Dirty, duplicate, empty-quarter, or excluded rows are separated from valid comparison rows or explicitly marked as excluded from rollups."
+        ],
+        "fail_criteria": [
+          "Periods, metrics, or included channel population are not visible.",
+          "Dirty, duplicate, empty-quarter, or excluded rows are mixed into clean comparison totals without a visible status."
+        ]
+      },
+      {
+        "id": "expanded_counts_have_named_denominators",
+        "question": "Do explicit rates, percentages, ratios, or aggregate counts identify the population they are measured over when such metrics appear?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Every visible rate/percentage/ratio states or clearly names its denominator population, such as source total, eligible records, clean outputs, excluded records, or supplier/account/entity scope.",
+          "Standalone counts without rates may pass only when the count label itself names the population being counted and visible exclusions are not silently folded into that count."
+        ],
+        "fail_criteria": [
+          "A rate, percentage, ratio, or aggregate count is shown but the measured-over population is unclear.",
+          "Excluded, dropped, merged, or review-needed records visibly affect a denominator or aggregate count without being named or separated."
+        ]
+      },
+      {
+        "id": "channel_change_values_have_before_after_basis",
+        "question": "Are change/delta fields supported by visible before-and-after period values?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "For material channel changes, the workbook shows both baseline-period value, comparison-period value, and change/delta value in the same row or visibly linked columns.",
+          "Negative and positive changes remain signed or otherwise clearly identified."
+        ],
+        "fail_criteria": [
+          "The workbook reports only change values without baseline/current values.",
+          "Change direction is ambiguous because signs, labels, or before/after period headers are missing."
+        ]
+      },
+      {
+        "id": "channel_metric_comparison_keeps_entity_period_metric_together",
+        "question": "Does each comparison row keep channel identity, period pair, metric family, value, and delta context together?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Settlement and payment rows keep channel name, baseline period, comparison period, metric name, current value, and change or direction in the same row or directly linked cells.",
+          "Rows for the same channel do not require guessing whether a value belongs to settlement, payment, order, revenue, or headcount context."
+        ],
+        "fail_criteria": [
+          "Metric values or deltas are detached from channel or period context.",
+          "The workbook contains channel names and metric names separately but not enough row-level binding to audit a specific channel-period comparison."
+        ]
+      },
+      {
+        "id": "channel_payment_yoy_metric_family_complete",
+        "question": "Does the payment comparison expose the complete year-over-year metric family for each channel?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Payment rows visibly include GMV, revenue, B-side revenue, and headcount for both 2025 Q1 and 2026 Q1, plus the corresponding change/delta fields.",
+          "The payment metric family is not substituted with settlement-only metrics or a prose summary."
+        ],
+        "fail_criteria": [
+          "Payment comparison rows omit B-side revenue or headcount, or only report current-quarter values without the 2025 Q1 baseline.",
+          "Payment and settlement scopes are mixed so the reviewer cannot tell which source produced a metric."
+        ]
+      },
+      {
+        "id": "channel_required_spot_channels_have_metric_family_rows",
+        "question": "Does the workbook keep the required settlement/payment comparison rows for the two spot-check channels `\\u9526\\u7ee3\\u751f\\u6d3b\\u9986` and `\\u4f18\\u4eab\\u5168\\u7403\\u8d2d` instead of dropping them or leaving their material metric cells empty?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Both spot-check channel names appear in the relevant settlement and payment comparison sections or rows.",
+          "Their core comparison metric cells are populated with concrete values, not blank, null, None, n/a, or placeholder text."
+        ],
+        "fail_criteria": [
+          "Either spot-check channel is missing from a comparison section where channel-level results are expected.",
+          "The row exists but material metric cells are blank or represented as None/n/a without an exception note."
+        ]
+      },
+      {
+        "id": "channel_settlement_and_payment_scopes_stay_separate",
+        "question": "Are settlement and payment comparisons kept as separate scopes with their own periods, source fields, and metric meanings?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "The workbook has clearly separated settlement and payment sections/sheets or equivalent labels.",
+          "Settlement rows compare 2026 Q1 vs 2025 Q4, while payment rows compare 2026 Q1 vs 2025 Q1."
+        ],
+        "fail_criteria": [
+          "Settlement and payment metrics are merged into a single ambiguous table without scope labels.",
+          "A reviewer cannot tell whether a GMV/revenue/headcount value came from settlement detail or payment detail."
+        ]
+      },
+      {
+        "id": "channel_settlement_qoq_metric_family_complete",
+        "question": "Does the settlement comparison expose the complete quarter-over-quarter metric family for each channel?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Settlement rows visibly include GMV, revenue, commission rate, and order count for both 2025 Q4 and 2026 Q1, plus the corresponding change/delta fields.",
+          "The 2025 Q4, 2026 Q1, and change fields are attached to the same channel identity so a reviewer can audit one channel row without reconstructing the table."
+        ],
+        "fail_criteria": [
+          "The settlement comparison omits one of the required metric families or only shows a subset such as GMV/revenue without commission rate or order count.",
+          "Change fields are absent, separated from channel rows, or cannot be tied back to the before/after quarter values."
+        ]
+      },
+      {
+        "id": "comparison_rows_show_period_pair_and_direction",
+        "question": "Do comparison rows show the two compared periods and the direction or meaning of each delta?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Material comparison rows identify the baseline period, comparison period, metric, and delta or direction being interpreted.",
+          "Positive and negative changes are labeled from the same channel perspective rather than leaving sign conventions ambiguous."
+        ],
+        "fail_criteria": [
+          "Rows show differences without making the compared periods visible.",
+          "Delta signs, growth labels, or period directions are ambiguous or inconsistent across sheets."
+        ]
+      },
+      {
+        "id": "metric_cells_have_metric_specific_context",
+        "question": "Do metric values remain tied to their metric family instead of appearing as bare numbers?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Settlement, payment, GMV, revenue, order, commission, and headcount values are labeled with their metric names or metric groups.",
+          "Delta or ratio fields make clear which metric they are comparing."
+        ],
+        "fail_criteria": [
+          "Numeric columns are unlabeled or use generic names that make the metric family ambiguous.",
+          "A reviewer cannot tell whether a delta belongs to settlement, payment, revenue, orders, or headcount."
+        ]
+      },
+      {
+        "id": "settlement_and_payment_metrics_remain_separate",
+        "question": "Are settlement metrics and payment metrics kept as separate comparison families?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Settlement-oriented values such as settlement GMV, revenue, commission, or order count are visibly separated from payment-oriented values such as payment GMV, payment revenue, B-side revenue, or headcount.",
+          "The same channel can be reviewed in both metric families without confusing which family a delta belongs to."
+        ],
+        "fail_criteria": [
+          "Settlement and payment metrics are merged into one table with ambiguous metric labels.",
+          "Deltas or rates appear without showing whether they refer to settlement or payment comparison."
+        ]
+      },
+      {
+        "id": "workbook_is_channel_period_comparison",
+        "question": "Does the workbook read as a channel-level period comparison deliverable?",
+        "artifact_refs": [
+          "comparison_workbook"
+        ],
+        "pass_criteria": [
+          "Visible sheets or tables cover channel settlement and collection comparisons.",
+          "The content is organized by channel or period rather than unrelated raw dumps."
+        ],
+        "fail_criteria": [
+          "The workbook is unrelated to channel period comparison.",
+          "It lacks structured comparison tables."
+        ]
+      }
+    ]
+  },
+  "score_merge": {
+    "method": "weighted_sum",
+    "rule_weight": 0.85,
+    "llm_weight": 0.15
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "case_slug": "calendar_dida_sync_state",
+  "created_after_p6_gate": "G-P6R2-001",
+  "current_public_surface": {
+    "event_count": 18,
+    "manifest_version": "public-state-contract-2026-07-14-rev-002",
+    "mapping_count": 13,
+    "new_motifs": [
+      "same_title_different_sync_key_source_reissue",
+      "target_list_vs_existing_stable_match_tension"
+    ],
+    "suppressed_duplicate_count": 4,
+    "task_count": 19
+  },
+  "derivation_boundary": "Hidden contract rebuilt only from approved public files under instruction.md, input/workspace/, and environment/ after P6 reopen 002 approval G-P6R2-001. No private trace, live service, Judge, VLM, or semantic scoring is used.",
+  "expected_counts": {
+    "active_mappings_for_current_window_after_run": 8,
+    "duplicate_or_excluded_total": 8,
+    "excluded_event_count": 4,
+    "inactive_this_run": 4,
+    "manual_tasks_preserved": 7,
+    "mappings_total": 17,
+    "new_tasks": 4,
+    "suppressed_duplicates_total": 4,
+    "tasks_total": 23,
+    "updated_existing": 3
+  },
+  "expected_decisions": {
+    "created_from_events": [
+      {
+        "due_time": "2026-07-15T08:40:00+08:00",
+        "event_id": "evt-20260715-briefing-A",
+        "event_uid": "uid-local-briefing-20260715",
+        "list_id": "list_focus_week",
+        "priority": "normal",
+        "sync_key": "cal::uid-local-briefing-20260715::2026-07-15"
+      },
+      {
+        "due_time": "2026-07-15T14:15:00+08:00",
+        "event_id": "evt-20260715-vendor-review-A",
+        "event_uid": "uid-local-vendor-review-20260715",
+        "list_id": "list_focus_week",
+        "priority": "high",
+        "sync_key": "cal::uid-local-vendor-review-20260715::2026-07-15"
+      },
+      {
+        "due_time": "2026-07-17T12:30:00+08:00",
+        "event_id": "evt-20260717-onsite-A",
+        "event_uid": "uid-local-onsite-20260717",
+        "list_id": "list_focus_week",
+        "priority": "normal",
+        "sync_key": "cal::uid-local-onsite-20260717::2026-07-17"
+      },
+      {
+        "due_time": "2026-07-17T15:30:00+08:00",
+        "event_id": "evt-20260717-contract-new-A",
+        "event_uid": "uid-local-contract-renewal-20260717-v2",
+        "list_id": "list_focus_week",
+        "priority": "normal",
+        "sync_key": "cal::uid-local-contract-renewal-20260717-v2::2026-07-17"
+      }
+    ],
+    "excluded_event_ids": [
+      "evt-20260716-readonly-lunch-A",
+      "evt-20260724-after-window-A",
+      "evt-20260714-before-window-A",
+      "evt-archive-20260630-A"
+    ],
+    "inactive_tasks": [
+      {
+        "event_id": "evt-20260720-demo-cancelled-A",
+        "mapping_id": "map-local-1003",
+        "reason": "calendar_event_cancelled",
+        "task_id": "task-local-2003"
+      },
+      {
+        "event_id": "evt-20260721-checkout-cancelled-A",
+        "mapping_id": "map-local-1004",
+        "reason": "calendar_event_cancelled",
+        "task_id": "task-local-2004"
+      },
+      {
+        "mapping_id": "map-local-1005",
+        "reason": "source_missing_current_export",
+        "sync_key": "cal::uid-local-doc-freeze-20260718::2026-07-18",
+        "task_id": "task-local-2005"
+      },
+      {
+        "mapping_id": "map-local-1013",
+        "reason": "source_missing_current_export",
+        "sync_key": "cal::uid-local-contract-renewal-20260717-v1::2026-07-17",
+        "task_id": "task-local-2019"
+      }
+    ],
+    "manual_preserve_tasks": [
+      "task-local-2007",
+      "task-local-2008",
+      "task-local-2010",
+      "task-local-2011",
+      "task-local-2012",
+      "task-local-2013",
+      "task-local-2016"
+    ],
+    "no_change_tasks": [
+      "task-local-2006",
+      "task-local-2009",
+      "task-local-2014",
+      "task-local-2015",
+      "task-local-2018"
+    ],
+    "suppressed_duplicate_event_ids": [
+      "evt-20260715-briefing-duplicate-B",
+      "evt-20260719-review-duplicate-B",
+      "evt-20260716-budget-shadow-B",
+      "evt-20260719-review-near-window-shadow-C"
+    ],
+    "updated_existing": [
+      {
+        "due_time": "2026-07-16T10:00:00+08:00",
+        "event_id": "evt-20260716-budget-A",
+        "list_id": "list_focus_week",
+        "mapping_id": "map-local-1001",
+        "sync_key": "cal::uid-local-budget-20260716::2026-07-16",
+        "task_id": "task-local-2001"
+      },
+      {
+        "due_time": "2026-07-19T16:00:00+08:00",
+        "event_id": "evt-20260719-review-moved-A",
+        "list_id": "list_focus_week",
+        "mapping_id": "map-local-1002",
+        "sync_key": "cal::uid-local-review-moved-20260719::2026-07-19",
+        "task_id": "task-local-2002"
+      },
+      {
+        "due_time": "2026-07-18T10:45:00+08:00",
+        "event_id": "evt-20260718-training-A",
+        "list_id": "list_focus_week",
+        "mapping_id": "map-local-1011",
+        "priority": "low",
+        "sync_key": "cal::uid-local-training-20260718::2026-07-18",
+        "task_id": "task-local-2017"
+      }
+    ]
+  },
+  "expected_state_files": {
+    "sync_history": "gold/expected/sync_history.json",
+    "sync_summary": "gold/expected/sync_summary.md",
+    "task_state": "gold/expected/task_state.json"
+  },
+  "generated_id_policy": "New generated task_id/mapping_id values are validated by visible source linkage, sync_key/event_uid/event_id consistency, uniqueness, non-reuse of unrelated public IDs, schema/state consistency, and summary consistency; no undisclosed exact generated-ID sequence is required.",
+  "public_revision_records": [
+    "R-P8-REV-002"
+  ],
+  "public_workspace_snapshot": {
+    "file_count": 9,
+    "files": [
+      {
+        "mutable": false,
+        "path": "input/workspace/README_先读我.md",
+        "protected": true,
+        "sha256": "450f4c6beea2cb49695211f1dac83ade0d6507674b1c43ba8144b106c1335df8",
+        "size_bytes": 1348
+      },
+      {
+        "mutable": false,
+        "path": "input/workspace/calendar/calendar_export_2026-07-14.json",
+        "protected": true,
+        "sha256": "4ee0873883d853916d5ef7fbc46f33c9680ee8c731438cf3fd7ee4bdf771e1ef",
+        "size_bytes": 15657
+      },
+      {
+        "mutable": false,
+        "path": "input/workspace/notes/operator_notes.txt",
+        "protected": true,
+        "sha256": "8a5ba9f1bd46d1a51144b9b63dcaf32e48bca6a41f12b9299617bdf81edda8f2",
+        "size_bytes": 1278
+      },
+      {
+        "mutable": true,
+        "path": "input/workspace/reports/sync_summary.md",
+        "protected": false,
+        "sha256": "6d5714254cb7433e144cf415a14ee032afe5f36477980a54134a8503451940b2",
+        "size_bytes": 429
+      },
+      {
+        "mutable": false,
+        "path": "input/workspace/rules/sync_policy.md",
+        "protected": true,
+        "sha256": "2a42efc02b28efa797f092e55e0c21dacc986f90233d6f31311e3f070c2c5403",
+        "size_bytes": 5705
+      },
+      {
+        "mutable": true,
+        "path": "input/workspace/sync/sync_history.json",
+        "protected": false,
+        "sha256": "7ad390c137748a4194fba6220453162b55d257e48f18219d36f1f2c086b03b4b",
+        "size_bytes": 11743
+      },
+      {
+        "mutable": true,
+        "path": "input/workspace/tasks/task_state.json",
+        "protected": false,
+        "sha256": "33b4be571c6fb9da36ad8b85ccd31ea10cc42e94c48314b7fbaa0a7e96d08583",
+        "size_bytes": 23755
+      },
+      {
+        "mutable": false,
+        "path": "environment/local_mock_sync/README.md",
+        "protected": true,
+        "sha256": "7e94d8ab8da2df6e1e8b5d47f5a36878e86f7f8b3e2ea26a0f7ab927fa955201",
+        "size_bytes": 1036
+      },
+      {
+        "mutable": false,
+        "path": "environment/state_diff_manifest.json",
+        "protected": true,
+        "sha256": "d1a8f87cfb84ba942a2f30b0a88b10c684b946626f80e7df80135ac212daba8c",
+        "size_bytes": 3221
+      }
+    ],
+    "manifest_version": "public-state-contract-2026-07-14-rev-002",
+    "scope": "input/ and environment/ after P6 reopen 002 approval G-P6R2-001; only the three mutable files may change in submitted final state",
+    "tree_sha256": "f91810ce4813abeea1c7daa8a0e5ecf95d0456031174c9948132513d34fa8e96"
+  },
+  "run_contract": {
+    "mutable_files": [
+      "input/workspace/reports/sync_summary.md",
+      "input/workspace/sync/sync_history.json",
+      "input/workspace/tasks/task_state.json"
+    ],
+    "no_live_service_required": true,
+    "required_summary_headings": [
+      "## 本轮同步结论",
+      "## 新建待办",
+      "## 更新已有同步项",
+      "## 置为 inactive",
+      "## 保持不变",
+      "## 重复或排除",
+      "## 手工/无关任务保留",
+      "## 边界确认"
+    ],
+    "run_id": "run-20260714-1820-local",
+    "source_files_must_remain_unchanged": true,
+    "sync_run_time_local": "2026-07-14T18:20:00+08:00"
+  },
+  "schema_version": "calendar_dida_sync_state.gold.rebuild.v2",
+  "stales_prior_p7_gate": "G-P7-REBUILD-001",
+  "uses_judge": false,
+  "uses_vlm_judge": false
+}

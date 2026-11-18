@@ -1,0 +1,881 @@
+{
+  "state_meta": {
+    "workspace": "local_mock_sync",
+    "app_kind": "static_mock_task_store",
+    "state_exported_at": "2026-07-14T18:06:00+08:00",
+    "timezone": "Asia/Shanghai",
+    "sync_run_id": "run-20260714-1820-local",
+    "notes": [
+      "This is a local synthetic task/reminder state file.",
+      "Only this JSON file, sync_history.json, and sync_summary.md are mutable for the synchronization task."
+    ]
+  },
+  "lists": [
+    {
+      "list_id": "list_focus_week",
+      "name": "本周重点",
+      "kind": "mock_task_list"
+    },
+    {
+      "list_id": "list_personal_buffer",
+      "name": "缓冲提醒",
+      "kind": "mock_reminder_list"
+    },
+    {
+      "list_id": "list_backlog",
+      "name": "稍后处理",
+      "kind": "mock_task_list"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "task-local-2001",
+      "title": "同步：预算口径确认会",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-16T10:00:00+08:00",
+      "reminder_time": "2026-07-16T09:50:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "budget"
+      ],
+      "manual_tags": [
+        "财务口径"
+      ],
+      "manual_note": "会前带上上周版本，不要覆盖这条备注。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-budget-20260716::2026-07-16",
+        "event_uid": "uid-local-budget-20260716",
+        "event_id": "evt-20260716-budget-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T12:10:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "预算口径确认会",
+        "source_start_time": "2026-07-16T10:30:00+08:00",
+        "source_end_time": "2026-07-16T11:30:00+08:00",
+        "source_location": "线上会议室-灰",
+        "due_offset_minutes": -30,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-10T09:30:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2002",
+      "title": "同步：周报数据复核",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-19T16:00:00+08:00",
+      "reminder_time": "2026-07-19T15:50:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "weekly"
+      ],
+      "manual_tags": [],
+      "manual_note": "保留上次手工写的检查范围说明。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-review-moved-20260719::2026-07-19",
+        "event_uid": "uid-local-review-moved-20260719",
+        "event_id": "evt-20260719-review-moved-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T17:08:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "周报数据复核",
+        "source_start_time": "2026-07-19T16:30:00+08:00",
+        "source_end_time": "2026-07-19T17:00:00+08:00",
+        "source_location": "线上会议室-绿",
+        "due_offset_minutes": -30,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-09T16:00:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2003",
+      "title": "同步：样机演示预演",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-20T13:00:00+08:00",
+      "reminder_time": "2026-07-20T12:50:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "demo"
+      ],
+      "manual_tags": [
+        "预演"
+      ],
+      "manual_note": "原本需要准备演示线缆，取消时也不要删记录。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-demo-cancelled-20260720::2026-07-20",
+        "event_uid": "uid-local-demo-cancelled-20260720",
+        "event_id": "evt-20260720-demo-cancelled-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T09:40:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "样机演示预演",
+        "source_start_time": "2026-07-20T14:00:00+08:00",
+        "source_end_time": "2026-07-20T15:00:00+08:00",
+        "source_location": "二层路演间",
+        "due_offset_minutes": -60,
+        "inactive_reason": "calendar_event_cancelled"
+      },
+      "created_at": "2026-07-11T14:35:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2004",
+      "title": "同步：临时设备归还确认",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-21T09:40:00+08:00",
+      "reminder_time": "2026-07-21T09:30:00+08:00",
+      "priority": "low",
+      "tags": [
+        "calendar-sync",
+        "equipment"
+      ],
+      "manual_tags": [],
+      "manual_note": "",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-checkout-cancelled-20260721::2026-07-21",
+        "event_uid": "uid-local-checkout-cancelled-20260721",
+        "event_id": "evt-20260721-checkout-cancelled-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T08:30:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "临时设备归还确认",
+        "source_start_time": "2026-07-21T10:00:00+08:00",
+        "source_end_time": "2026-07-21T10:20:00+08:00",
+        "source_location": "服务台",
+        "due_offset_minutes": -20,
+        "inactive_reason": "calendar_event_cancelled"
+      },
+      "created_at": "2026-07-12T11:25:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2005",
+      "title": "同步：资料封版提醒",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-18T17:30:00+08:00",
+      "reminder_time": "2026-07-18T17:20:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "doc"
+      ],
+      "manual_tags": [
+        "版本"
+      ],
+      "manual_note": "历史同步项；如果本轮来源缺失且仍在窗口内，按规则置 inactive。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-doc-freeze-20260718::2026-07-18",
+        "event_uid": "uid-local-doc-freeze-20260718",
+        "event_id": "evt-20260718-doc-freeze-old",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-10T10:00:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "资料封版提醒",
+        "source_start_time": "2026-07-18T18:00:00+08:00",
+        "source_end_time": "2026-07-18T18:15:00+08:00",
+        "source_location": "本地提醒",
+        "due_offset_minutes": -30,
+        "inactive_reason": "source_missing_current_export"
+      },
+      "created_at": "2026-07-10T10:20:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2006",
+      "title": "同步：晨间同步材料整理",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-16T09:00:00+08:00",
+      "reminder_time": "2026-07-16T08:50:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "morning"
+      ],
+      "manual_tags": [],
+      "manual_note": "已按 7/16 那场做过同步。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-briefing-shift-20260716::2026-07-16",
+        "event_uid": "uid-local-briefing-shift-20260716",
+        "event_id": "evt-20260716-briefing-shift-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T17:50:00+08:00",
+        "last_synced_at": "2026-07-14T18:00:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "晨间同步材料整理",
+        "source_start_time": "2026-07-16T09:20:00+08:00",
+        "source_end_time": "2026-07-16T09:50:00+08:00",
+        "source_location": "线上会议室-蓝",
+        "due_offset_minutes": -20,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T18:00:00+08:00",
+      "updated_at": "2026-07-14T18:00:00+08:00"
+    },
+    {
+      "task_id": "task-local-2007",
+      "title": "手工：供应商方案复盘补充问题",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-15T14:00:00+08:00",
+      "reminder_time": "2026-07-15T13:45:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "manual",
+        "review"
+      ],
+      "manual_tags": [
+        "手工整理"
+      ],
+      "manual_note": "标题很像日历事件，但这是人工补充问题清单，不能作为同步目标覆盖。",
+      "manual_lock": true,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-13T20:15:00+08:00",
+      "updated_at": "2026-07-13T20:15:00+08:00"
+    },
+    {
+      "task_id": "task-local-2008",
+      "title": "手工：预算口径确认会发言稿",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_backlog",
+      "due_time": "2026-07-16T09:30:00+08:00",
+      "reminder_time": null,
+      "priority": "low",
+      "tags": [
+        "manual",
+        "budget"
+      ],
+      "manual_tags": [],
+      "manual_note": "不要因标题相似改成日历同步任务。",
+      "manual_lock": true,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-12T08:10:00+08:00",
+      "updated_at": "2026-07-12T08:10:00+08:00"
+    },
+    {
+      "task_id": "task-local-2009",
+      "title": "同步：旧窗口外资料归档",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_backlog",
+      "due_time": "2026-07-24T09:30:00+08:00",
+      "reminder_time": "2026-07-24T09:15:00+08:00",
+      "priority": "low",
+      "tags": [
+        "calendar-sync",
+        "out-of-window"
+      ],
+      "manual_tags": [],
+      "manual_note": "来源在本轮窗口外，除非规则要求不要动。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-after-window-20260724::2026-07-24",
+        "event_uid": "uid-after-window-20260724",
+        "event_id": "evt-20260724-after-window-old",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-12T13:30:00+08:00",
+        "last_synced_at": "2026-07-12T13:35:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "窗口外资料归档",
+        "source_start_time": "2026-07-24T10:00:00+08:00",
+        "source_end_time": "2026-07-24T10:30:00+08:00",
+        "source_location": "本地归档",
+        "due_offset_minutes": -30,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-12T13:35:00+08:00",
+      "updated_at": "2026-07-12T13:35:00+08:00"
+    },
+    {
+      "task_id": "task-local-2010",
+      "title": "手工：午间散步",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_personal_buffer",
+      "due_time": "2026-07-16T12:00:00+08:00",
+      "reminder_time": "2026-07-16T11:50:00+08:00",
+      "priority": "low",
+      "tags": [
+        "manual",
+        "personal"
+      ],
+      "manual_tags": [],
+      "manual_note": "与只读日历午间提醒相近，但没有同步键。",
+      "manual_lock": true,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-08T20:00:00+08:00",
+      "updated_at": "2026-07-08T20:00:00+08:00"
+    },
+    {
+      "task_id": "task-local-2011",
+      "title": "手工：整理周末演练报名表",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_personal_buffer",
+      "due_time": "2026-07-18T09:00:00+08:00",
+      "reminder_time": null,
+      "priority": "normal",
+      "tags": [
+        "manual",
+        "training"
+      ],
+      "manual_tags": [
+        "报名"
+      ],
+      "manual_note": "这是报名表整理，不是日历提醒本身。",
+      "manual_lock": true,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-13T18:30:00+08:00",
+      "updated_at": "2026-07-13T18:30:00+08:00"
+    },
+    {
+      "task_id": "task-local-2012",
+      "title": "手工：仓库样板间门禁申请",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-17T12:00:00+08:00",
+      "reminder_time": null,
+      "priority": "normal",
+      "tags": [
+        "manual",
+        "onsite"
+      ],
+      "manual_tags": [
+        "门禁"
+      ],
+      "manual_note": "与现场物料点检相关但不是日历同步项。",
+      "manual_lock": true,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-13T09:20:00+08:00",
+      "updated_at": "2026-07-13T09:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2013",
+      "title": "手工：补登记发票抬头",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_backlog",
+      "due_time": "2026-07-20T18:00:00+08:00",
+      "reminder_time": null,
+      "priority": "low",
+      "tags": [
+        "manual",
+        "admin"
+      ],
+      "manual_tags": [],
+      "manual_note": "无关任务，不能被本轮同步修改。",
+      "manual_lock": false,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-10T21:45:00+08:00",
+      "updated_at": "2026-07-10T21:45:00+08:00"
+    },
+    {
+      "task_id": "task-local-2014",
+      "title": "同步：历史已完成归档记录",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_backlog",
+      "due_time": "2026-06-30T16:30:00+08:00",
+      "reminder_time": null,
+      "priority": "low",
+      "tags": [
+        "calendar-sync",
+        "archive"
+      ],
+      "manual_tags": [],
+      "manual_note": "历史归档，不属于本轮窗口。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-archive-20260630::2026-06-30",
+        "event_uid": "uid-archive-20260630",
+        "event_id": "evt-archive-20260630-old",
+        "calendar_id": "cal_mock_archive",
+        "last_source_updated_at": "2026-06-29T10:00:00+08:00",
+        "last_synced_at": "2026-06-29T10:05:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "历史安排归档占位",
+        "source_start_time": "2026-06-30T17:00:00+08:00",
+        "source_end_time": "2026-06-30T17:30:00+08:00",
+        "source_location": "本地归档",
+        "due_offset_minutes": -30,
+        "inactive_reason": "historical_archive"
+      },
+      "created_at": "2026-06-29T10:05:00+08:00",
+      "updated_at": "2026-06-30T18:00:00+08:00"
+    },
+    {
+      "task_id": "task-local-2015",
+      "title": "同步：晨间同步材料整理（旧日归档记录）",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-15T08:40:00+08:00",
+      "reminder_time": "2026-07-15T08:30:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "morning",
+        "old-instance"
+      ],
+      "manual_tags": [],
+      "manual_note": "旧实例已归档；不要当作 active 匹配目标。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-briefing-old-20260715::2026-07-15",
+        "event_uid": "uid-local-briefing-old-20260715",
+        "event_id": "evt-old-briefing-archive",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-10T08:00:00+08:00",
+        "last_synced_at": "2026-07-10T08:05:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "晨间同步材料整理",
+        "source_start_time": "2026-07-15T09:00:00+08:00",
+        "source_end_time": "2026-07-15T09:30:00+08:00",
+        "source_location": "线上会议室-蓝",
+        "due_offset_minutes": -20,
+        "inactive_reason": "superseded_local_archive"
+      },
+      "created_at": "2026-07-10T08:05:00+08:00",
+      "updated_at": "2026-07-12T19:00:00+08:00"
+    },
+    {
+      "task_id": "task-local-2016",
+      "title": "手工：本周待办清理",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_backlog",
+      "due_time": null,
+      "reminder_time": null,
+      "priority": "low",
+      "tags": [
+        "manual",
+        "cleanup"
+      ],
+      "manual_tags": [],
+      "manual_note": "普通清理项，不参与日历同步。",
+      "manual_lock": false,
+      "source": {
+        "kind": "manual",
+        "sync_key": null,
+        "event_uid": null,
+        "event_id": null,
+        "calendar_id": null,
+        "last_source_updated_at": null,
+        "last_synced_at": null
+      },
+      "sync_fields": {
+        "source_title": null,
+        "source_start_time": null,
+        "source_end_time": null,
+        "source_location": null,
+        "due_offset_minutes": null,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T09:00:00+08:00",
+      "updated_at": "2026-07-14T09:00:00+08:00"
+    },
+    {
+      "task_id": "task-local-2019",
+      "title": "同步：合同归档提醒",
+      "status": "inactive",
+      "archived": true,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-17T15:20:00+08:00",
+      "reminder_time": "2026-07-17T15:10:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "contract",
+        "old-source"
+      ],
+      "manual_tags": [
+        "法务"
+      ],
+      "manual_note": "旧本地端同步项；同名记录要先看 sync_key 和历史状态，不要和同名新 UID 混成一条。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-contract-renewal-20260717-v1::2026-07-17",
+        "event_uid": "uid-local-contract-renewal-20260717-v1",
+        "event_id": "evt-20260717-contract-old",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-12T16:00:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "合同归档提醒",
+        "source_start_time": "2026-07-17T15:50:00+08:00",
+        "source_end_time": "2026-07-17T16:10:00+08:00",
+        "source_location": "本地提醒",
+        "due_offset_minutes": -30,
+        "inactive_reason": "source_missing_current_export"
+      },
+      "created_at": "2026-07-12T16:10:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2017",
+      "title": "同步：周末演练报名截止提醒",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-18T10:45:00+08:00",
+      "reminder_time": "2026-07-18T10:35:00+08:00",
+      "priority": "low",
+      "tags": [
+        "calendar-sync",
+        "training",
+        "mobile-cache"
+      ],
+      "manual_tags": [
+        "报名"
+      ],
+      "manual_note": "手机端先建过的同步提醒；本轮只刷新同步字段，别覆盖这条备注。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-training-20260718::2026-07-18",
+        "event_uid": "uid-local-training-20260718",
+        "event_id": "evt-20260718-training-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-13T19:22:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "周末演练报名截止提醒",
+        "source_start_time": "2026-07-18T11:00:00+08:00",
+        "source_end_time": "2026-07-18T11:15:00+08:00",
+        "source_location": "提醒状态快照",
+        "due_offset_minutes": -15,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-13T20:05:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2018",
+      "title": "同步：窗口后资料补充提醒",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_backlog",
+      "due_time": "2026-07-22T09:00:00+08:00",
+      "reminder_time": "2026-07-22T08:50:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "after-window"
+      ],
+      "manual_tags": [
+        "延后"
+      ],
+      "manual_note": "历史同步项，目标时间已延到本轮窗口之后；缺失判断要同时看窗口。",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-after-window-missing-20260722::2026-07-22",
+        "event_uid": "uid-local-after-window-missing-20260722",
+        "event_id": "evt-20260722-after-window-missing-old",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-12T18:00:00+08:00",
+        "last_synced_at": "2026-07-12T18:10:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "窗口后资料补充提醒",
+        "source_start_time": "2026-07-22T09:30:00+08:00",
+        "source_end_time": "2026-07-22T09:45:00+08:00",
+        "source_location": "本地提醒",
+        "due_offset_minutes": -30,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-12T18:10:00+08:00",
+      "updated_at": "2026-07-12T18:10:00+08:00"
+    },
+    {
+      "task_id": "task-local-2020",
+      "title": "同步：晨间同步材料整理",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-15T08:40:00+08:00",
+      "reminder_time": "2026-07-15T08:30:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "morning"
+      ],
+      "manual_tags": [],
+      "manual_note": "",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-briefing-20260715::2026-07-15",
+        "event_uid": "uid-local-briefing-20260715",
+        "event_id": "evt-20260715-briefing-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T17:42:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "晨间同步材料整理",
+        "source_start_time": "2026-07-15T09:00:00+08:00",
+        "source_end_time": "2026-07-15T09:30:00+08:00",
+        "source_location": "线上会议室-蓝",
+        "due_offset_minutes": -20,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T18:20:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2021",
+      "title": "同步：供应商方案复盘",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-15T14:15:00+08:00",
+      "reminder_time": "2026-07-15T14:05:00+08:00",
+      "priority": "high",
+      "tags": [
+        "calendar-sync",
+        "review"
+      ],
+      "manual_tags": [],
+      "manual_note": "",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-vendor-review-20260715::2026-07-15",
+        "event_uid": "uid-local-vendor-review-20260715",
+        "event_id": "evt-20260715-vendor-review-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T16:55:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "供应商方案复盘",
+        "source_start_time": "2026-07-15T15:00:00+08:00",
+        "source_end_time": "2026-07-15T16:00:00+08:00",
+        "source_location": "三层讨论区",
+        "due_offset_minutes": -45,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T18:20:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2022",
+      "title": "同步：现场物料点检",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-17T12:30:00+08:00",
+      "reminder_time": "2026-07-17T12:20:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "onsite"
+      ],
+      "manual_tags": [],
+      "manual_note": "",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-onsite-20260717::2026-07-17",
+        "event_uid": "uid-local-onsite-20260717",
+        "event_id": "evt-20260717-onsite-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T15:18:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "现场物料点检",
+        "source_start_time": "2026-07-17T13:30:00+08:00",
+        "source_end_time": "2026-07-17T14:15:00+08:00",
+        "source_location": "仓库样板间",
+        "due_offset_minutes": -60,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T18:20:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    },
+    {
+      "task_id": "task-local-2023",
+      "title": "同步：合同归档提醒",
+      "status": "active",
+      "archived": false,
+      "list_id": "list_focus_week",
+      "due_time": "2026-07-17T15:30:00+08:00",
+      "reminder_time": "2026-07-17T15:20:00+08:00",
+      "priority": "normal",
+      "tags": [
+        "calendar-sync",
+        "contract"
+      ],
+      "manual_tags": [],
+      "manual_note": "",
+      "manual_lock": false,
+      "source": {
+        "kind": "mock_calendar",
+        "sync_key": "cal::uid-local-contract-renewal-20260717-v2::2026-07-17",
+        "event_uid": "uid-local-contract-renewal-20260717-v2",
+        "event_id": "evt-20260717-contract-new-A",
+        "calendar_id": "cal_mock_work_ops",
+        "last_source_updated_at": "2026-07-14T17:25:00+08:00",
+        "last_synced_at": "2026-07-14T18:20:00+08:00"
+      },
+      "sync_fields": {
+        "source_title": "合同归档提醒",
+        "source_start_time": "2026-07-17T16:00:00+08:00",
+        "source_end_time": "2026-07-17T16:20:00+08:00",
+        "source_location": "提醒状态快照",
+        "due_offset_minutes": -30,
+        "inactive_reason": null
+      },
+      "created_at": "2026-07-14T18:20:00+08:00",
+      "updated_at": "2026-07-14T18:20:00+08:00"
+    }
+  ]
+}

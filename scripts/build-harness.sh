@@ -11,7 +11,7 @@ source scripts/manifest-env.sh "$HARNESS"
 
 case "$HARNESS" in
   opencode)    VERSION_ARG="OPENCODE_CLI_VERSION=${HARNESS_VERSION}" ;;
-  pi)          VERSION_ARG="PI_VERSION=${HARNESS_VERSION}" ;;
+  pi|pi-debian) VERSION_ARG="PI_VERSION=${HARNESS_VERSION}" ;;
   claude-code) VERSION_ARG="CLAUDE_CODE_VERSION=${HARNESS_VERSION}" ;;
   *) echo "ERROR: no build-arg mapping for harness '$HARNESS' in scripts/build-harness.sh" >&2; exit 1 ;;
 esac

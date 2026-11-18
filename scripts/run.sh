@@ -275,7 +275,7 @@ PY
 
 # ── 3) `harness:` must match import_path, manifest and image mount ─────
 case "$HARNESS_SLUG:$AGENT_IMPORT" in
-    opencode:*MountedOpenCode|pi:*MountedPi|claude-code:*MountedClaudeCode) ;;
+    opencode:*MountedOpenCode|pi|pi-debian:*MountedPi|claude-code:*MountedClaudeCode) ;;
     *) fail "$JOB_CONFIG mismatch: harness: $HARNESS_SLUG vs agents[0].import_path $AGENT_IMPORT.
   Expected pairs: opencode/MountedOpenCode, pi/MountedPi, claude-code/MountedClaudeCode." ;;
 esac
@@ -383,8 +383,23 @@ fi
 # and $OPENAI_BASE_URL reads); harbor resolves the endpoint names host-side
 # from the exported environment. The key enters under both protocol names;
 # each harness reads the one its protocol expects.
+#
+# --verifier-env carries the judge connection for in-container verifiers
+# (wb-office composite verifier reads JUDGE_BASE_URL / JUDGE_API_KEY /
+# JUDGE_MODEL). Sourced from the model group's OpenAI-protocol values when
+# present, otherwise the harness protocol's; when absent the verifier
+# degrades to its rule score only.
+VERIFIER_ENV_ARGS=()
+if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${API_KEY:-}" ] && [ -n "${OPENAI_MODEL_ID:-}" ]; then
+    VERIFIER_ENV_ARGS=(
+        --verifier-env "JUDGE_BASE_URL=${OPENAI_BASE_URL}"
+        --verifier-env "JUDGE_API_KEY=${API_KEY}"
+        --verifier-env "JUDGE_MODEL=${OPENAI_MODEL_ID}"
+    )
+fi
 PYTHONPATH="$PWD" .venv/bin/harbor run -c "$RUNTIME_JOB_CONFIG" --job-name "$JOB_NAME" \
     ${VERIFIER_ARGS[@]+"${VERIFIER_ARGS[@]}"} \
+    ${VERIFIER_ENV_ARGS[@]+"${VERIFIER_ENV_ARGS[@]}"} \
     --agent-env "${_prefix}_BASE_URL=${GATEWAY_URL}" \
     --agent-env "${_prefix}_API_KEY=${API_KEY}" \
     --agent-env "OPENAI_API_KEY=${API_KEY:-}" \
