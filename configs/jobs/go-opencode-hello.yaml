@@ -1,4 +1,0 @@
-id: go-opencode-hello
-bench: hello
-harness: opencode
-model: go/mimo-v2.6-flash

@@ -263,6 +263,26 @@ def _load_expected_json(case_dir: Path, rel: str) -> Any:
         return json.load(handle)
 
 
+def _load_initial_json(case_dir: Path, rel: str) -> Any:
+    """Read a workspace file as it was before the agent ran (root commit of the
+    workspace git repo, created by environment/Dockerfile); the agent edits the
+    working copy in place, so the working copy cannot tell initial ids from new ones."""
+    import subprocess
+
+    try:
+        root = subprocess.run(
+            ["git", "-C", str(case_dir), "rev-list", "--max-parents=0", "HEAD"],
+            capture_output=True, text=True, check=True,
+        ).stdout.split()[0]
+        shown = subprocess.run(
+            ["git", "-C", str(case_dir), "show", f"{root}:{Path(rel).as_posix()}"],
+            capture_output=True, text=True, check=True,
+        ).stdout
+        return json.loads(shown)
+    except (subprocess.CalledProcessError, IndexError, OSError, json.JSONDecodeError):
+        return _load_expected_json(case_dir, rel)
+
+
 def _read_expected_text(case_dir: Path, rel: str) -> str:
     return _release_case_file(case_dir, rel).read_text(encoding="utf-8")
 
@@ -1194,8 +1214,8 @@ def evaluate(path_arg: str | Path | None = None, *, case_dir: Path = CASE_DIR, v
     actual_by_mapping = _mappings_by_id(sync_history)
     actual_active_tasks_by_sync = _tasks_by_sync_key(task_state, status="active")
     actual_active_mappings_by_sync = _mappings_by_sync_key(sync_history, state="active")
-    initial_task_ids = set(_tasks_by_id(_load_expected_json(case_dir, "input/workspace/tasks/task_state.json")))
-    initial_mapping_ids = set(_mappings_by_id(_load_expected_json(case_dir, "input/workspace/sync/sync_history.json")))
+    initial_task_ids = set(_tasks_by_id(_load_initial_json(case_dir, "input/workspace/tasks/task_state.json")))
+    initial_mapping_ids = set(_mappings_by_id(_load_initial_json(case_dir, "input/workspace/sync/sync_history.json")))
 
     created_event_ids = set(_expected_event_specs(gold))
     expected_generated_task_ids = {
@@ -1229,8 +1249,8 @@ def evaluate(path_arg: str | Path | None = None, *, case_dir: Path = CASE_DIR, v
         ok, detail = _mapping_core_matches_event(mapping, task, event, "updated_from_calendar") if task and mapping else (False, f"missing mapping {mapping_id} or task {task_id}")
         checks.append(_check(f"stable_update_{mapping_id}_history_fields", ok, detail, "matching_and_updates"))
         if task_id == "task-local-2017":
-            prior_task = _tasks_by_id(_load_expected_json(case_dir, "input/workspace/tasks/task_state.json")).get(task_id, {})
-            prior_mapping = _mappings_by_id(_load_expected_json(case_dir, "input/workspace/sync/sync_history.json")).get(mapping_id, {})
+            prior_task = _tasks_by_id(_load_initial_json(case_dir, "input/workspace/tasks/task_state.json")).get(task_id, {})
+            prior_mapping = _mappings_by_id(_load_initial_json(case_dir, "input/workspace/sync/sync_history.json")).get(mapping_id, {})
             mobile_ok = bool(prior_task) and (prior_task.get("source") or {}).get("sync_key") == event["sync_key"] and (prior_mapping.get("sync_key") == event["sync_key"]) and task.get("task_id") == prior_task.get("task_id")
             checks.append(_check("stable_update_mobile_cache_training_matched_not_duplicated", mobile_ok, {"prior_task_id": prior_task.get("task_id"), "prior_mapping_id": prior_mapping.get("mapping_id"), "sync_key": event["sync_key"]}, "matching_and_updates"))
 

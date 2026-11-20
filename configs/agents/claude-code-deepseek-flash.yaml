@@ -1,0 +1,16 @@
+# agent 原型：claude-code（harness）+ deepseek-flash（模型，Anthropic 协议端点）。
+agents:
+  - import_path: harbor_test_agents:MountedClaudeCode
+    model_name: deepseek/deepseek-flash
+    kwargs:
+      reasoning_effort: medium
+    env:
+      PATH: /opt/claude-code/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      ANTHROPIC_API_KEY: ${DEEPSEEK_API_KEY}
+      ANTHROPIC_BASE_URL: ${DEEPSEEK_ANTHROPIC_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/claude-code:2.1.299
+      target: /opt/claude-code
+      read_only: true

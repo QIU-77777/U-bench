@@ -1,9 +1,0 @@
-id: wb-office
-# WorkBuddy Bench Office subset, first five tasks. See
-# datasets/wb-office-v1.0/README.md for provenance and verifier design.
-datasets:
-  - path: datasets/wb-office-v1.0/tasks
-n_attempts: 1
-n_concurrent_trials: 1
-timeout_multiplier: 1.0
-jobs_dir: jobs

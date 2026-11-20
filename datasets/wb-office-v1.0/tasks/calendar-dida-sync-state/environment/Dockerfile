@@ -1,7 +1,6 @@
 FROM python:3.12-slim
 
 ARG NODE_VERSION=20.18.1
-ARG MOUNT_HARNESS=1
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -11,13 +10,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
     pip install --no-cache-dir \
         "pytest==8.3.4"
-
-RUN if [ "$MOUNT_HARNESS" = "1" ]; then \
-      ln -sfn /opt/claude-code/bin/claude /usr/local/bin/claude; \
-      ln -sfn /opt/codebuddy-code/bin/codebuddy /usr/local/bin/codebuddy; \
-      ln -sfn /opt/codebuddy-code/bin/cbc /usr/local/bin/cbc; \
-      ln -sfn /opt/opencode/bin/opencode /usr/local/bin/opencode; \
-    fi
 
 WORKDIR /workspace
 

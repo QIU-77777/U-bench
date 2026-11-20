@@ -1,0 +1,16 @@
+# agent 原型：claude-code（harness）+ claude-haiku-5-5（模型，go 网关 Anthropic 协议）。
+agents:
+  - import_path: harbor_test_agents:MountedClaudeCode
+    model_name: go/claude-haiku-5-5
+    kwargs:
+      reasoning_effort: medium
+    env:
+      PATH: /opt/claude-code/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      ANTHROPIC_API_KEY: ${GO_API_KEY}
+      ANTHROPIC_BASE_URL: ${GO_ANTHROPIC_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/claude-code:2.1.299
+      target: /opt/claude-code
+      read_only: true

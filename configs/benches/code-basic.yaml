@@ -1,0 +1,3 @@
+datasets:
+  - path: datasets/code-basic-v1/tasks
+n_concurrent_trials: 2

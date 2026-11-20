@@ -1,46 +1,42 @@
-# WorkBuddy Bench Office subset (wb-office-v1.0), first five tasks.
-#
-# Source: Tencent WorkBuddy Bench, office subset v1.0
-#   /Users/jyxc-dz-0101032/qiguang/python-project/agent_eval/workbuddy-bench
-#   datasets/wb-bench-office-v1.0/tasks
-# Imported unchanged except for the verifier (see below). Task layout is
-# Harbor-native: instruction.md + task.toml + environment/ + tests/.
-#
-# Tasks (alphabetical, first five of the source's 50):
-#   analyst-forecast-extract-L3-018        xlsx + json      12 rubrics  0.8/0.2
-#   api-usage-explain-cli-l3-001           md + json         8 rubrics  0.8/0.2
-#   board-material-update-timeline-excel   md                9 rubrics  0.8/0.2
-#   calendar-dida-sync-state               md               13 rubrics  0.8/0.2
-#   channel-period-compare-L4-017          xlsx             13 rubrics  0.85/0.15
-#
-# Verifier (replicated, Harbor-native):
-#   tests/test.sh    Harbor entry point; runs verify.py in /workspace
-#   tests/verify.py  rule score (pytest grading + gold) + LLM judge
-#                    (judge.json rubrics) + weighted_sum merge
-#   tests/judge.json converted from the task's judge.yaml (no yaml dep)
-#   tests/grading/   upstream rule-based pytest suite (unchanged)
-#   tests/gold/      upstream gold answers (unchanged)
-#   tests/verifier.toml  upstream composite-verifier spec, kept for
-#                    provenance; Harbor does not read it, test.sh is the
-#                    entry point. Keep copies in sync after edits:
-#                    scripts/sync-office-verifier.sh
-#
-# Scoring: reward = (rule_weight * rule + llm_weight * llm) / (rule_weight
-# + llm_weight), weights per task from judge.yaml score_merge. The LLM judge
-# needs JUDGE_BASE_URL / JUDGE_API_KEY / JUDGE_MODEL in the verifier
-# environment (scripts/run.sh forwards them from the model's .env group).
-# Without judge env the rule score stands.
-#
-# Base image: every task image is FROM python:3.12-slim. Docker Hub is
-# unreachable on this machine; ensure the tags exist locally before a run:
-#   scripts/ensure-base-images.sh
-#
-# Harness: the task images are Debian-based, so the alpine-built default
-# harness/pi image (musl node) cannot execute inside them
-# ("/usr/bin/env: 'node': No such file or directory"). Use the glibc
-# variant harness/pi-debian (configs/harnesses/pi-debian.yaml, job
-# wb-office-pi-deepseek). Alpine-based task images keep harness/pi.
-#
-# Known gap: these tasks grade against gold answers, not a solution/solve.sh
-# oracle, so they do not yet satisfy the repository's native-Oracle
-# acceptance rule (AGENTS.md). Writing per-task oracles is follow-up work.
+# wb-office-v1.0
+
+腾讯 WorkBuddy Bench 办公子集（v1.0）的前 5 个任务（按名称排序），任务布局为 Harbor 原生：
+`instruction.md`、`task.toml`、`environment/`、`tests/`、`solution/`。
+
+| 任务 | 产物 | rubric 数 | 规则/judge 权重 |
+|---|---|---|---|
+| analyst-forecast-extract-L3-018 | xlsx + json | 10 | 0.8 / 0.2 |
+| api-usage-explain-cli-l3-001 | md + json | 5 | 0.8 / 0.2 |
+| board-material-update-timeline-excel | pptx | 4 | 0.8 / 0.2 |
+| calendar-dida-sync-state | md + json | 5 | 0.8 / 0.2 |
+| channel-period-compare-L4-017 | xlsx | 12 | 0.85 / 0.15 |
+
+## 评分
+
+`tests/test.sh` 是 Harbor 入口，运行 `tests/verify.py`，唯一实现在 `scripts/office-verifier/`，
+由 `scripts/sync-office-verifier.sh` 同步到各任务（修改后必须重新同步）：
+
+1. 规则分：`tests/grading` 的 pytest 对照 `tests/gold`，取 JUnit 通过率。
+2. judge 分：`tests/judge.json`（由 `judge.yaml` 转换）的每条 rubric 送评审模型判定 pass 或 fail，取均值。judge 只看任务指令与产物证据，不读 gold。
+3. 合并：按 `judge.yaml` 的 `score_merge` 加权求和。
+
+评分无效时不产生分数：规则 pytest 无结果、judge 未配置、judge 请求重试后仍失败，`verify.py` 都以非零码退出且不写 `reward.json`，Harbor 将该 trial 记为异常。
+judge 连接来自 `configs/benches/wb-office.yaml` 的 `verifier.env`，对应 `.env` 里的 `JUDGE_*`。
+
+`tests/verifier.toml`、`tests/grading/judge/` 是上游原样保留的文件，Harbor 不读取。
+
+与上游的差异：`api-usage-explain-cli-l3-001` 的 `eval_core.py` 把 `final_answer.md` 列入“不应出现的常见输出文件”，而 `instruction.md` 要求把答案保存到该文件，任何合规答案都会被扣一项。已从 `COMMON_OUTPUT_FILENAMES` 中移除该文件名。
+
+`calendar-dida-sync-state` 的 `eval_core.py` 从 agent 已修改过的工作副本读取“初始”task_id 与 mapping_id，新建的 ID 因此被当作初始 ID，8 项 `new_create_*_uses_nonpublic_*` 对任何 agent 都失败。已改为从工作区 git 根提交读取初始文件。
+
+## 参考解
+
+每个任务的 `solution/solve.sh` 生成满足评分的产物，供 Harbor 原生 Oracle 验收：
+
+```bash
+scripts/run.sh --oracle wb-office
+```
+
+## 基础镜像
+
+任务镜像基于 `python:3.12-slim`（glibc）。Docker Hub 不可达时先执行 `scripts/ensure-base-images.sh`。

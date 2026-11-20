@@ -1,0 +1,6 @@
+region,product,units,price
+East,pen,10,1.50
+East,book,3,12.00
+West,pen,7,1.50
+West,lamp,2,25.25
+North,book,,12.00

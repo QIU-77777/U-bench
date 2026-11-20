@@ -1,0 +1,17 @@
+# agent 原型：pi（harness）+ step-5-preview（模型）。
+agents:
+  - import_path: harbor_test_agents:MountedPi
+    model_name: stepfun/step-5-preview
+    kwargs:
+      model_api: openai-completions
+      thinking: medium
+    env:
+      PATH: /opt/pi/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      STEPFUN_API_KEY: ${STEPFUN_API_KEY}
+      STEPFUN_BASE_URL: ${STEPFUN_OPENAI_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/pi:1.2.0
+      target: /opt/pi
+      read_only: true

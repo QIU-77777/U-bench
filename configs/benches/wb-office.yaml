@@ -1,0 +1,10 @@
+# WorkBuddy Bench 办公子集（前 5 个任务），来源与评分设计见 datasets/wb-office-v1.0/README.md。
+# 评分器 tests/verify.py 需要 judge 连接；.env 缺少 JUDGE_* 时 Harbor 直接报错，不产生分数。
+datasets:
+  - path: datasets/wb-office-v1.0/tasks
+n_concurrent_trials: 1
+verifier:
+  env:
+    JUDGE_BASE_URL: ${JUDGE_BASE_URL}
+    JUDGE_API_KEY: ${JUDGE_API_KEY}
+    JUDGE_MODEL: ${JUDGE_MODEL}

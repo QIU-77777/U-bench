@@ -25,7 +25,6 @@ PATH_RE = re.compile(
 
 COMMON_OUTPUT_FILENAMES = {
     "answer.md",
-    "final_answer.md",
     "result.md",
     "usage.md",
     "usage_explanation.md",

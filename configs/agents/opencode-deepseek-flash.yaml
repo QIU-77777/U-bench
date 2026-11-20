@@ -1,0 +1,24 @@
+# agent 原型：opencode（harness）+ deepseek-flash（模型）。
+# provider 配置里的 {env:...} 由容器内的 opencode 展开，变量在下方 env 注入。
+agents:
+  - import_path: harbor_test_agents:MountedOpenCode
+    model_name: deepseek/deepseek-flash
+    kwargs:
+      opencode_config:
+        provider:
+          deepseek:
+            npm: "@ai-sdk/openai-compatible"
+            name: deepseek
+            options:
+              baseURL: "{env:OPENAI_BASE_URL}"
+              apiKey: "{env:OPENAI_API_KEY}"
+    env:
+      PATH: /opt/opencode/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      OPENAI_API_KEY: ${DEEPSEEK_API_KEY}
+      OPENAI_BASE_URL: ${DEEPSEEK_OPENAI_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/opencode:2.0.28
+      target: /opt/opencode
+      read_only: true

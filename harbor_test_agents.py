@@ -1,52 +1,20 @@
+"""挂载版 Harbor agent：CLI 来自预构建的 harness 镜像，不在每个 trial 里安装。
+
+镜像按 ``harness/<name>/manifest.yaml`` 构建，由 agent 配置文件
+（``configs/agents/*.yaml``）的 ``environment.mounts`` 以只读方式挂载到
+``/opt/<name>``。每个类只替换 Harbor 原版 agent 的 ``install``，运行与轨迹
+逻辑保持 Harbor 原版；``MountedOpenCode`` 另外把命令行换成 OpenCode v2 的写法
+（全局参数放在 ``opencode run`` 之后，``--dangerously-skip-permissions``
+改为 ``--auto``）。
+
+Harbor agents whose CLI comes from a prebuilt harness image mounted read-only
+at ``/opt/<name>`` instead of being installed per trial. Each class replaces
+only ``install``; Harbor's own run and trajectory logic is untouched.
+``MountedOpenCode`` also targets the OpenCode v2 command line.
 """
-Harbor agents for this test project.
-
-``MountedOpenCode`` is Harbor's stock OpenCode agent with three changes:
-
-1. The CLI is not installed into the container at trial setup. It comes from the
-   prebuilt harness image mounted read-only at ``/usr/local``, so no
-   ``npm i -g`` runs per trial and the CLI version is fixed by the image tag
-   (2.0.28 here).
-2. The command line targets the OpenCode v2 CLI. Harbor's stock agent targets
-   the legacy ``opencode-ai`` 1.x package, where global flags precede the
-   subcommand and ``--dangerously-skip-permissions`` exists; the v2 CLI takes
-   those flags after ``opencode run`` and replaced the latter with ``--auto``.
-3. ``scripts/run.sh`` resolves ``model: provider/model-id`` from ``.env``
-   before Harbor starts and writes the resolved value into the temporary job
-   config. Harbor therefore saves the real model identity in ``config.json``.
-
-``MountedPi`` is Harbor's stock pi agent with one change: the CLI is not
-installed per trial — it comes from the ``harness/pi`` image mounted
-read-only at ``/usr/local`` (version fixed by the image tag, 1.2.0 here).
-Harbor's own pi run and trajectory logic (session-dir JSONL) is untouched.
-
-本测试项目的 Harbor agent。
-
-``MountedOpenCode`` 在 Harbor 原版 OpenCode agent 的基础上做了三处改动：
-
-1. CLI 不在 trial 启动时安装进容器。它来自预构建的 harness 镜像，
-   以只读方式挂载到 ``/usr/local``，因此每个 trial 不再执行
-   ``npm i -g``，且 CLI 版本由镜像 tag 固定（此处为 2.0.28）。
-2. 命令行面向 OpenCode v2 CLI。Harbor 原版 agent 面向旧的
-   ``opencode-ai`` 1.x 包——全局 flag 放在子命令之前，且有
-   ``--dangerously-skip-permissions``；v2 CLI 把这些 flag 放在
-   ``opencode run`` 之后，并用 ``--auto`` 取代了后者。
-3. ``scripts/run.sh`` 在 Harbor 启动前解析 ``model: provider/model-id``，
-   从 ``.env`` 选择供应商变量组，并把完整模型身份写入临时 job 配置。
-   Harbor 会将真实模型身份保存到 ``config.json``。
-
-``MountedPi`` 在 Harbor 原版 pi agent 的基础上做了一处改动：CLI 同样
-不在每个 trial 里安装，而是来自 ``harness/pi`` 镜像（只读挂载到
-``/usr/local``，版本由镜像 tag 固定，此处为 1.2.0）。
-pi 的运行与轨迹逻辑（基于 ``--session-dir`` 的 JSONL）保持原版不动。
-
-"""
-
-from pathlib import Path
-from typing import override
 
 import shlex
-import yaml
+from typing import override
 
 from harbor.agents.installed.base import (
     NonZeroAgentExitCodeError,
@@ -59,36 +27,21 @@ from harbor.environments.base import BaseEnvironment
 from harbor.models.agent.context import AgentContext
 
 
-def _manifest_version(harness: str) -> str:
-    """Read the pinned version from harness/<harness>/manifest.yaml."""
-    manifest = (
-        Path(__file__).resolve().parent / "harness" / harness / "manifest.yaml"
+async def _require_cli(agent, environment: BaseEnvironment, binary: str) -> None:
+    result = await agent.exec_as_agent(
+        environment, command=f"command -v {binary} && {binary} --version"
     )
-    return str(yaml.safe_load(manifest.read_text())["version"])
-
-
-# Version the harness image must provide; read from the single source so a
-# version bump never leaves this file behind.
-HARNESS_EXPECTED_VERSION = _manifest_version("opencode")
+    if result.return_code != 0:
+        output = ((result.stdout or "") + (result.stderr or "")).strip()
+        raise RuntimeError(
+            f"{binary} CLI 不在容器内：检查 agent 配置的 environment.mounts 与 PATH。{output!r}"
+        )
 
 
 class MountedOpenCode(OpenCode):
-    """OpenCode agent that expects the CLI to be mounted in by the harness image.
-    期望 CLI 由 harness 镜像挂载进来的 OpenCode agent。"""
-
     @override
     async def install(self, environment: BaseEnvironment) -> None:
-        result = await self.exec_as_agent(
-            environment,
-            command="command -v opencode && opencode --version",
-        )
-        output = (result.stdout or "") + (result.stderr or "")
-        if HARNESS_EXPECTED_VERSION not in output:
-            raise RuntimeError(
-                "opencode CLI missing or wrong version; expected "
-                f"{HARNESS_EXPECTED_VERSION} from the harness image mount, "
-                f"got: {output.strip()!r}"
-            )
+        await _require_cli(self, environment, "opencode")
 
     @override
     @with_prompt_template
@@ -144,45 +97,16 @@ class MountedOpenCode(OpenCode):
 
 
 class MountedPi(Pi):
-    """pi agent that expects the CLI to be mounted in by the harness image.
-    期望 CLI 由 harness 镜像挂载进来的 pi agent。"""
-
     @override
     async def install(self, environment: BaseEnvironment) -> None:
-        expected = _manifest_version("pi")
-        result = await self.exec_as_agent(
-            environment,
-            command="command -v pi && pi --version",
-        )
-        output = (result.stdout or "") + (result.stderr or "")
-        if expected not in output:
-            raise RuntimeError(
-                "pi CLI missing or wrong version; expected "
-                f"{expected} from the harness image mount, "
-                f"got: {output.strip()!r}"
-            )
+        await _require_cli(self, environment, "pi")
 
 
 class MountedClaudeCode(ClaudeCode):
-    """Claude Code agent that expects the CLI to be mounted in by the harness
-    image. 期望 CLI 由 harness 镜像挂载进来的 Claude Code agent。"""
-
     @override
     async def install(self, environment: BaseEnvironment) -> None:
-        # The job snapshot keeps provider/model-id for reporting. Claude Code
-        # receives only the model id through ANTHROPIC_MODEL.
+        # 作业快照保留 provider/model-id；Claude Code 只接收模型 ID。
         if self.model_name and "/" in self.model_name:
             self.model_name = self.model_name.split("/", 1)[1]
             self._init_model_info()
-        expected = _manifest_version("claude-code")
-        result = await self.exec_as_agent(
-            environment,
-            command="command -v claude && claude --version",
-        )
-        output = (result.stdout or "") + (result.stderr or "")
-        if expected not in output:
-            raise RuntimeError(
-                "claude CLI missing or wrong version; expected "
-                f"{expected} from the harness image mount, "
-                f"got: {output.strip()!r}"
-            )
+        await _require_cli(self, environment, "claude")

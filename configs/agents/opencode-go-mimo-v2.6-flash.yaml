@@ -1,0 +1,23 @@
+# agent 原型：opencode（harness）+ mimo-v2.6-flash（模型，go 网关 OpenAI 协议）。
+agents:
+  - import_path: harbor_test_agents:MountedOpenCode
+    model_name: go/mimo-v2.6-flash
+    kwargs:
+      opencode_config:
+        provider:
+          go:
+            npm: "@ai-sdk/openai-compatible"
+            name: go
+            options:
+              baseURL: "{env:OPENAI_BASE_URL}"
+              apiKey: "{env:OPENAI_API_KEY}"
+    env:
+      PATH: /opt/opencode/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      OPENAI_API_KEY: ${GO_API_KEY}
+      OPENAI_BASE_URL: ${GO_OPENAI_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/opencode:2.0.28
+      target: /opt/opencode
+      read_only: true

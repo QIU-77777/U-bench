@@ -15,10 +15,13 @@ Scoring replicates WorkBuddy Bench's office composite verifier:
 3. Merge — ``weighted_sum`` with the weights declared in ``judge.yaml``
    (``score_merge.rule_weight`` / ``score_merge.llm_weight``).
 
-Judge connection comes from the environment (Harbor ``--verifier-env``):
-``JUDGE_BASE_URL``, ``JUDGE_API_KEY``, ``JUDGE_MODEL``. When the judge is not
-configured the rule score stands, mirroring the upstream "disabled judges are
-non-fatal" behaviour.
+Judge connection comes from the environment (Harbor ``verifier.env`` in the
+bench config): ``JUDGE_BASE_URL``, ``JUDGE_API_KEY``, ``JUDGE_MODEL``.
+
+Invalid verification never yields a score: when the rule pytest cannot produce
+a result, the judge is not configured, or a judge request still fails after
+retries, this script exits non-zero WITHOUT writing ``reward.json`` and Harbor
+records the trial as errored.
 
 Only the standard library is used: task images are not guaranteed to carry
 pyyaml or openpyxl.
@@ -63,6 +66,10 @@ def log(message: str) -> None:
 # ── rule score ─────────────────────────────────────────────────────────
 
 
+class InvalidVerification(RuntimeError):
+    """The verifier could not produce a trustworthy score."""
+
+
 def run_rule() -> tuple[float, dict]:
     """Run tests/grading with pytest and return (pass_rate, details)."""
     grading_dir = TESTS_DIR / "grading"
@@ -82,22 +89,20 @@ def run_rule() -> tuple[float, dict]:
             cmd, capture_output=True, text=True, env=env,
             timeout=RULE_TIMEOUT_SEC, cwd=str(WORKSPACE_DIR),
         )
-    except subprocess.TimeoutExpired:
-        return 0.0, {"error": f"rule pytest timed out after {RULE_TIMEOUT_SEC}s"}
-    except Exception as exc:  # noqa: BLE001 - scoring must never crash the trial
-        return 0.0, {"error": f"rule pytest failed to start: {exc!r}"}
+    except subprocess.TimeoutExpired as exc:
+        raise InvalidVerification(f"rule pytest timed out after {RULE_TIMEOUT_SEC}s") from exc
 
     (VERIFIER_DIR / "rule_pytest_output.txt").write_text(
         (proc.stdout or "") + "\n" + (proc.stderr or ""), encoding="utf-8"
     )
 
     if not junit_path.exists():
-        return 0.0, {"error": "no junit xml produced", "exit_code": proc.returncode}
+        raise InvalidVerification(f"no junit xml produced (pytest exit code {proc.returncode})")
 
     try:
         root = ET.parse(junit_path).getroot()
     except ET.ParseError as exc:
-        return 0.0, {"error": f"junit xml unreadable: {exc}"}
+        raise InvalidVerification(f"junit xml unreadable: {exc}") from exc
 
     suites = [root] if root.tag == "testsuite" else list(root.iter("testsuite"))
     total = failures = errors = skipped = 0
@@ -107,14 +112,15 @@ def run_rule() -> tuple[float, dict]:
         errors += int(suite.get("errors", 0))
         skipped += int(suite.get("skipped", 0))
     passed = total - failures - errors - skipped
-    rate = (passed / total) if total else 0.0
-    detail = {
+    if not total:
+        raise InvalidVerification("rule pytest collected no tests")
+    rate = passed / total
+    if proc.returncode not in (0, 1):
+        raise InvalidVerification(f"pytest exit code {proc.returncode}")
+    return rate, {
         "tests": total, "passed": passed, "failures": failures,
         "errors": errors, "skipped": skipped, "exit_code": proc.returncode,
     }
-    if proc.returncode not in (0, 1):
-        detail["warning"] = f"pytest exit code {proc.returncode}"
-    return rate, detail
 
 
 # ── artifact evidence ───────────────────────────────────────────────────
@@ -304,8 +310,9 @@ def judge_one(rubric: dict, instruction: str, evidence_json: str, rule_reward: f
         except (urllib.error.URLError, TimeoutError, ValueError, KeyError, json.JSONDecodeError) as exc:
             last_error = f"{type(exc).__name__}: {exc}"
             log(f"rubric {rubric_id} attempt {attempt + 1} failed: {last_error}")
-    return {"id": rubric_id, "verdict": "fail", "score": 0.0,
-            "reason": f"judge error after {JUDGE_RETRIES + 1} attempts: {last_error}"}
+    raise InvalidVerification(
+        f"judge failed for rubric {rubric_id} after {JUDGE_RETRIES + 1} attempts: {last_error}"
+    )
 
 
 def run_llm_judge(cfg: dict, rule_reward: float) -> tuple[float | None, dict]:
@@ -315,9 +322,9 @@ def run_llm_judge(cfg: dict, rule_reward: float) -> tuple[float | None, dict]:
     ]
     if not rubrics:
         return None, {"status": "skipped", "reason": "no rubrics in judge config"}
-    if not (os.environ.get("JUDGE_BASE_URL") and os.environ.get("JUDGE_API_KEY")
-            and os.environ.get("JUDGE_MODEL")):
-        return None, {"status": "skipped", "reason": "judge env not configured"}
+    missing = [n for n in ("JUDGE_BASE_URL", "JUDGE_API_KEY", "JUDGE_MODEL") if not os.environ.get(n)]
+    if missing:
+        raise InvalidVerification(f"judge env not configured: {', '.join(missing)}")
 
     instruction = INSTRUCTION_PATH.read_text(encoding="utf-8") if INSTRUCTION_PATH.is_file() else ""
     evidence = collect_evidence(cfg.get("artifacts") or [])
@@ -366,9 +373,8 @@ def main() -> int:
 
     try:
         cfg = json.loads(JUDGE_CONFIG_PATH.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001
-        cfg = {}
-        log(f"judge config unreadable: {exc!r}")
+    except (OSError, json.JSONDecodeError) as exc:
+        raise InvalidVerification(f"judge config unreadable: {exc!r}") from exc
 
     llm_score, judge_detail = run_llm_judge(cfg, rule_score)
     log(f"llm judge score: {llm_score}")
@@ -391,15 +397,11 @@ def main() -> int:
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
-    except Exception:  # noqa: BLE001 - never crash the verifier without a reward
+    except Exception:  # noqa: BLE001 - invalid verification: diagnose, write no reward
         import traceback
         VERIFIER_DIR.mkdir(parents=True, exist_ok=True)
-        (VERIFIER_DIR / "reward.json").write_text(
-            json.dumps({"reward": 0.0}), encoding="utf-8"
-        )
         (VERIFIER_DIR / "score.json").write_text(json.dumps({
-            "reward": 0.0, "error": "verifier crashed",
-            "traceback": traceback.format_exc(),
+            "error": "verification invalid", "traceback": traceback.format_exc(),
         }, ensure_ascii=False, indent=2), encoding="utf-8")
         traceback.print_exc()
-        raise SystemExit(0)
+        raise SystemExit(1)

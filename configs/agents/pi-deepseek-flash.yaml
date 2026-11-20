@@ -1,0 +1,17 @@
+# agent 原型：pi（harness）+ deepseek-flash（模型）。
+agents:
+  - import_path: harbor_test_agents:MountedPi
+    model_name: deepseek/deepseek-flash
+    kwargs:
+      model_api: openai-completions
+      thinking: medium
+    env:
+      PATH: /opt/pi/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_OPENAI_BASE_URL}
+environment:
+  mounts:
+    - type: image
+      source: harbor-test/harness/pi:1.2.0
+      target: /opt/pi
+      read_only: true
